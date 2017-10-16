@@ -19,7 +19,6 @@ public class ResourceManager implements Manager {
 	private HashMap<Integer, String> preLoadTextures;
 	private HashMap<String, Texture> textures;
 	private ArrayList<String> queue;
-	private ArrayList<String> toRemove;
 
 	private Properties config;
 
@@ -35,7 +34,6 @@ public class ResourceManager implements Manager {
 		preLoadTextures = new HashMap<Integer, String>();
 		textures = new HashMap<String, Texture>();
 		queue = new ArrayList<String>();
-		toRemove = new ArrayList<String>();
 	}
 
 	@Override
@@ -74,15 +72,14 @@ public class ResourceManager implements Manager {
 
 	@Override
 	public void update() {
+		Log.info("Resource");
 		long time = Sys.getTime();
 
 		while (!queue.isEmpty() && Sys.getTime() <= time + MAX_TIME) {
 			loadTexture(queue.get(0));
-			toRemove.add(queue.get(0));
+			queue.remove(0);
 		}
-
-		queue.removeAll(toRemove);
-		toRemove.clear();
+		Log.info("Finished loop");
 	}
 
 	private void addToQueue(String name) {
@@ -129,7 +126,6 @@ public class ResourceManager implements Manager {
 	@Override
 	public void deinit() {
 		queue.clear();
-		toRemove.clear();
 		textures.clear();
 	}
 

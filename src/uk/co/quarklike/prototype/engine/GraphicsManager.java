@@ -53,6 +53,7 @@ public class GraphicsManager implements Manager {
 
 	@Override
 	public void update() {
+		Log.info("Graphics");
 		glClear(GL_COLOR_BUFFER_BIT);
 		glLoadIdentity();
 
@@ -137,19 +138,22 @@ public class GraphicsManager implements Manager {
 	}
 
 	private void drawEntities(Map map, int camX, int camY, int row) {
+		glColor3f(1.0f, 0.0f, 1.0f);
+
 		for (Entity e : map.getEntities()) {
 			int x = e.getX();
 			int y = e.getY();
-			if (y != row)
-				return;
-			if (x >= camX - ((width / 64) - 2) && x <= camX + ((width / 64) + 2) && y >= camY - ((height / 64) - 2) && y <= camY + ((height / 64) + 2)) {
-				int slot = e.getTextureSlot() - 1;
-				if (slot != -1) {
-					Texture t = contentHub.getResources().getTexture(e.getTexture());
-					renderEngine.drawQuad((e.getX() * 32) + e.getSubX(), (e.getY() * 32) + e.getSubY() - 12, 32, 32, t.getTextureWidth() / 32, slot, t.getTextureID());
+			if (y == row)
+				if (x >= camX - ((width / 64) - 2) && x <= camX + ((width / 64) + 2) && y >= camY - ((height / 64) - 2) && y <= camY + ((height / 64) + 2)) {
+					int slot = e.getTextureSlot() - 1;
+					if (slot != -1) {
+						Texture t = contentHub.getResources().getTexture(e.getTexture());
+						renderEngine.drawQuad((e.getX() * 32) + e.getSubX(), (e.getY() * 32) + e.getSubY() - 12, 32, 32, t.getTextureWidth() / 32, slot, t.getTextureID());
+					}
 				}
-			}
 		}
+
+		glColor3f(1.0f, 1.0f, 1.0f);
 	}
 
 	@Override

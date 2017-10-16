@@ -46,6 +46,7 @@ public class GameManager implements Manager {
 
 	@Override
 	public void update() {
+		Log.info("Game");
 		contentHub.setMapToDraw(currentMap);
 		contentHub.setCamera(player);
 		currentMap.requestTextures(contentHub.getResources());
