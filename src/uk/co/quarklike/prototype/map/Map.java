@@ -7,7 +7,8 @@ import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.engine.ResourceManager;
 
 public class Map {
-	public static final int TILE_LAYERS = 4;
+	public static final int TILE_LAYERS = 9;
+	public static final int COLLISION_LAYER = 18;
 
 	public static final byte NORTH = 0;
 	public static final byte EAST = 1;
@@ -31,7 +32,7 @@ public class Map {
 	}
 
 	public boolean getCollision(int x, int y, byte direction) {
-		String value = Integer.toBinaryString(data.getValue(x, y, TILE_LAYERS * 2));
+		String value = Integer.toBinaryString(data.getValue(x, y, COLLISION_LAYER));
 
 		int length = value.length();
 
@@ -62,7 +63,7 @@ public class Map {
 	}
 
 	public void setCollision(int x, int y, byte direction, boolean blocked) {
-		int v = data.getValue(x, y, TILE_LAYERS * 2);
+		int v = data.getValue(x, y, COLLISION_LAYER);
 		switch (direction) {
 		case NORTH:
 			v += blocked ? 1 : getCollision(x, y, NORTH) ? -1 : 0;
@@ -78,7 +79,7 @@ public class Map {
 			break;
 		}
 
-		data.setValue(x, y, TILE_LAYERS * 2, v);
+		data.setValue(x, y, COLLISION_LAYER, v);
 	}
 
 	public boolean isBlocked(int x, int y, byte direction) {
@@ -153,7 +154,7 @@ public class Map {
 			return 0;
 		}
 	}
-	
+
 	public void save(String fileName) {
 		data.saveToFile(fileName);
 	}

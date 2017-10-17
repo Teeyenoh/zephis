@@ -53,7 +53,6 @@ public class GraphicsManager implements Manager {
 
 	@Override
 	public void update() {
-		Log.info("Graphics");
 		glClear(GL_COLOR_BUFFER_BIT);
 		glLoadIdentity();
 
@@ -86,13 +85,18 @@ public class GraphicsManager implements Manager {
 
 		drawLayer(map, camX, camY, 0);
 		drawLayer(map, camX, camY, 1);
+		drawLayer(map, camX, camY, 2);
 
 		for (int i = camY - (height / 64) - 2; i < camY + (height / 64) + 2; i++) {
 			drawEntities(map, camX, camY, i);
-			drawRow(map, camX, camY, 2, i);
+			drawRow(map, camX, camY, 3, i);
+			drawRow(map, camX, camY, 4, i);
+			drawRow(map, camX, camY, 5, i);
 		}
 
-		drawLayer(map, camX, camY, 3);
+		drawLayer(map, camX, camY, 6);
+		drawLayer(map, camX, camY, 7);
+		drawLayer(map, camX, camY, 8);
 
 		if (Main.DEBUG)
 			drawColliders(map, camX, camY);

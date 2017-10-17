@@ -4,7 +4,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
-import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.map.Entity;
@@ -41,12 +40,11 @@ public class GameManager implements Manager {
 	public void postInit() {
 		currentMap = new Map(MapData.fromFile("test.qm1"));
 		(player = new EntityLiving("Player", "tiles/grass.png")).register(currentMap);
-		player.setPosition(127, 127);
+		player.setPosition(15, 15);
 	}
 
 	@Override
 	public void update() {
-		Log.info("Game");
 		contentHub.setMapToDraw(currentMap);
 		contentHub.setCamera(player);
 		currentMap.requestTextures(contentHub.getResources());
@@ -77,6 +75,21 @@ public class GameManager implements Manager {
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_4))
 			layer = 3;
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_5))
+			layer = 4;
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_6))
+			layer = 5;
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_7))
+			layer = 6;
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_8))
+			layer = 7;
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_9))
+			layer = 8;
 
 		int mouseX = Mouse.getX() - (contentHub.getWindowWidth() / 2);
 		int mouseY = Mouse.getY() - (contentHub.getWindowHeight() / 2);

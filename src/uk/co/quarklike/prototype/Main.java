@@ -2,13 +2,11 @@ package uk.co.quarklike.prototype;
 
 import java.util.Random;
 
-import org.lwjgl.Sys;
-
 import uk.co.quarklike.prototype.engine.*;
 
 public class Main implements Runnable {
-	public static final boolean DEBUG = true;//Boolean.valueOf(System.getenv("DEBUG"));
-	public static final String TITLE = "Zephis v0.5.0-alpha";
+	public static final boolean DEBUG = Boolean.valueOf(System.getenv("DEBUG"));
+	public static final String TITLE = "Zephis v0.5.1-alpha";
 
 	public static Main instance;
 
@@ -35,6 +33,7 @@ public class Main implements Runnable {
 	}
 
 	public void init() {
+		Log.initLog();
 		Log.info("Initialising " + TITLE);
 
 		rand = new Random();
@@ -45,28 +44,20 @@ public class Main implements Runnable {
 		m_graphics = new GraphicsManager();
 		m_game = new GameManager();
 
-		long time = 0;
-
 		Log.info("Pre-Init...");
-		time = Sys.getTime();
 		m_resource.preInit(contentHub);
 		m_graphics.preInit(contentHub);
 		m_game.preInit(contentHub);
-		Log.info("Done: " + (Sys.getTime() - time));
 
 		Log.info("Init...");
-		time = Sys.getTime();
 		m_resource.init();
 		m_graphics.init();
 		m_game.init();
-		Log.info("Done: " + (Sys.getTime() - time));
 
 		Log.info("Post-Init...");
-		time = Sys.getTime();
 		m_resource.postInit();
 		m_graphics.postInit();
 		m_game.postInit();
-		Log.info("Done: " + (Sys.getTime() - time));
 	}
 
 	public void update() {
@@ -82,6 +73,7 @@ public class Main implements Runnable {
 		m_game.deinit();
 		m_graphics.deinit();
 		m_resource.deinit();
+		Log.deinitLog();
 	}
 
 	public Random getRand() {

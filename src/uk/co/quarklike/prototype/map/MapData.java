@@ -10,7 +10,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import uk.co.quarklike.prototype.Log;
 
 public class MapData {
-	public static final int LAYERS = 9;
+	public static final int LAYERS = 24;
 
 	private int mapID;
 	private int rawWidth, rawHeight;
@@ -48,8 +48,8 @@ public class MapData {
 		return height;
 	}
 
-	private static final int HEADER = 9;
-	private static final int TILE = 9;
+	private static final int HEADER = 24;
+	private static final int TILE = 24;
 
 	public static MapData fromFile(String fileName) {
 		MapData output = null;
@@ -96,24 +96,16 @@ public class MapData {
 			out.write(mapID);
 			out.write(rawWidth);
 			out.write(rawHeight);
-			out.write(0);
-			out.write(0);
-			out.write(0);
-			out.write(0);
-			out.write(0);
-			out.write(0);
+
+			for (int i = 2; i < HEADER; i++) {
+				out.write(0);
+			}
 
 			for (int j = 0; j < height; j++) {
 				for (int i = 0; i < width; i++) {
-					out.write(values[i][j][0]);
-					out.write(values[i][j][1]);
-					out.write(values[i][j][2]);
-					out.write(values[i][j][3]);
-					out.write(values[i][j][4]);
-					out.write(values[i][j][5]);
-					out.write(values[i][j][6]);
-					out.write(values[i][j][7]);
-					out.write(values[i][j][8]);
+					for (int k = 0; k < LAYERS; k++) {
+						out.write(values[i][j][k]);
+					}
 				}
 			}
 

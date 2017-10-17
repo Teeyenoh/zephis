@@ -72,14 +72,12 @@ public class ResourceManager implements Manager {
 
 	@Override
 	public void update() {
-		Log.info("Resource");
 		long time = Sys.getTime();
 
 		while (!queue.isEmpty() && Sys.getTime() <= time + MAX_TIME) {
 			loadTexture(queue.get(0));
 			queue.remove(0);
 		}
-		Log.info("Finished loop");
 	}
 
 	private void addToQueue(String name) {
