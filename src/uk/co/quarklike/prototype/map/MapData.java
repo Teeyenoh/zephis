@@ -97,7 +97,7 @@ public class MapData {
 			out.write(rawWidth);
 			out.write(rawHeight);
 
-			for (int i = 2; i < HEADER; i++) {
+			for (int i = 3; i < HEADER; i++) {
 				out.write(0);
 			}
 
