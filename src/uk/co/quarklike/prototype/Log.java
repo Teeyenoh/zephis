@@ -1,5 +1,6 @@
 package uk.co.quarklike.prototype;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.text.NumberFormat;
@@ -12,6 +13,9 @@ public class Log {
 	private static PrintStream log;
 
 	public static void initLog() {
+		File logsF = new File("logs/");
+		logsF.mkdir();
+
 		try {
 			log = new PrintStream("logs/log-" + getDateTimeSimple() + ".log");
 		} catch (FileNotFoundException e) {
