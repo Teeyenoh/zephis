@@ -47,7 +47,7 @@ public class ResourceManager implements Manager {
 		try {
 			p.load(ResourceLoader.getResourceAsStream("res/textures/textures.properties"));
 		} catch (IOException e) {
-			Log.warning("Failed to load preload textures file", e);
+			Log.warn("Failed to load preload textures file", e);
 			return;
 		}
 		int i = 0;
@@ -62,7 +62,7 @@ public class ResourceManager implements Manager {
 		try {
 			config.load(ResourceLoader.getResourceAsStream("res/config.properties"));
 		} catch (IOException e) {
-			Log.error("Failed to load config file", e);
+			Log.err("Failed to load config file", e);
 			return;
 		}
 
@@ -117,7 +117,7 @@ public class ResourceManager implements Manager {
 			textures.put(name, TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/textures/" + name)));
 		} catch (IOException | RuntimeException e) {
 			textures.put(name, getTexture("blank.png"));
-			Log.warning("Failed to load texture: " + name, e);
+			Log.warn("Failed to load texture: " + name, e);
 		}
 	}
 

@@ -34,7 +34,14 @@ public class Log {
 		log.println(out);
 	}
 
-	public static void warning(Object x, Exception e) {
+	public static void warn(Object x) {
+		String out = getDateTime() + " [Thread: " + Thread.currentThread().getName() + "] [" + getManagerName() + "] WARN: " + x;
+
+		System.out.println(out);
+		log.println(out);
+	}
+
+	public static void warn(Object x, Exception e) {
 		String out = getDateTime() + " [Thread: " + Thread.currentThread().getName() + "] [" + getManagerName() + "] WARN: " + x;
 
 		System.out.println(out);
@@ -44,7 +51,16 @@ public class Log {
 			e.printStackTrace(log);
 	}
 
-	public static void error(Object x, Exception e) {
+	public static void err(Object x) {
+		String out = getDateTime() + " [Thread: " + Thread.currentThread().getName() + "] [" + getManagerName() + "] ERR: " + x;
+
+		System.out.println(out);
+		log.println(out);
+
+		Main.instance.stop();
+	}
+
+	public static void err(Object x, Exception e) {
 		String out = getDateTime() + " [Thread: " + Thread.currentThread().getName() + "] [" + getManagerName() + "] ERR: " + x;
 
 		System.out.println(out);

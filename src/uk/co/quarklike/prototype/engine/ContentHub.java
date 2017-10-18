@@ -1,7 +1,7 @@
 package uk.co.quarklike.prototype.engine;
 
-import uk.co.quarklike.prototype.map.Entity;
 import uk.co.quarklike.prototype.map.Map;
+import uk.co.quarklike.prototype.map.entity.Entity;
 
 public class ContentHub {
 	private ResourceManager resources;

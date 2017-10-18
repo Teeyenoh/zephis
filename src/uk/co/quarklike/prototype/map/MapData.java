@@ -76,7 +76,7 @@ public class MapData {
 				}
 			}
 		} catch (IOException e) {
-			Log.error("Failed to read map file: " + fileName, e);
+			Log.err("Failed to read map file: " + fileName, e);
 		}
 
 		return output;

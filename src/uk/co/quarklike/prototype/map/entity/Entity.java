@@ -1,4 +1,6 @@
-package uk.co.quarklike.prototype.map;
+package uk.co.quarklike.prototype.map.entity;
+
+import uk.co.quarklike.prototype.map.Map;
 
 public class Entity {
 	// Entity type

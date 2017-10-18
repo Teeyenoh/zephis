@@ -6,10 +6,10 @@ import org.lwjgl.opengl.Display;
 
 import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.Util;
-import uk.co.quarklike.prototype.map.Entity;
-import uk.co.quarklike.prototype.map.EntityLiving;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.MapData;
+import uk.co.quarklike.prototype.map.entity.Entity;
+import uk.co.quarklike.prototype.map.entity.EntityLiving;
 
 public class GameManager implements Manager {
 	private ContentHub contentHub;

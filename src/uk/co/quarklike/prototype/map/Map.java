@@ -5,10 +5,12 @@ import java.util.HashMap;
 
 import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.engine.ResourceManager;
+import uk.co.quarklike.prototype.map.entity.Entity;
 
 public class Map {
 	public static final int TILE_LAYERS = 9;
 	public static final int COLLISION_LAYER = 18;
+	public static final int ITEM_LAYER = 19;
 
 	public static final byte NORTH = 0;
 	public static final byte EAST = 1;
@@ -54,6 +56,10 @@ public class Map {
 		}
 	}
 
+	public int getItem(int x, int y) {
+		return data.getValue(x, y, ITEM_LAYER);
+	}
+
 	public void setTile(int x, int y, int layer, int tile) {
 		data.setValue(x, y, layer, tile);
 	}
@@ -80,6 +86,10 @@ public class Map {
 		}
 
 		data.setValue(x, y, COLLISION_LAYER, v);
+	}
+
+	public void setItem(int x, int y, int itemID) {
+		data.setValue(x, y, ITEM_LAYER, itemID);
 	}
 
 	public boolean isBlocked(int x, int y, byte direction) {

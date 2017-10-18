@@ -9,8 +9,9 @@ import org.newdawn.slick.opengl.Texture;
 
 import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Main;
-import uk.co.quarklike.prototype.map.Entity;
 import uk.co.quarklike.prototype.map.Map;
+import uk.co.quarklike.prototype.map.entity.Entity;
+import uk.co.quarklike.prototype.map.item.Item;
 
 public class GraphicsManager implements Manager {
 	private ContentHub contentHub;
@@ -32,7 +33,7 @@ public class GraphicsManager implements Manager {
 			Display.setTitle(Main.TITLE);
 			Display.create();
 		} catch (LWJGLException e) {
-			Log.error("Failed to create display object", e);
+			Log.err("Failed to create display object", e);
 		}
 
 		renderEngine = new RenderEngine();
@@ -88,6 +89,7 @@ public class GraphicsManager implements Manager {
 		drawLayer(map, camX, camY, 2);
 
 		for (int i = camY - (height / 64) - 2; i < camY + (height / 64) + 2; i++) {
+			drawItems(map, camX, camY, i);
 			drawEntities(map, camX, camY, i);
 			drawRow(map, camX, camY, 3, i);
 			drawRow(map, camX, camY, 4, i);
@@ -124,6 +126,16 @@ public class GraphicsManager implements Manager {
 				int texture = map.getTexture(i, row, layer);
 				Texture t = contentHub.getResources().getTexture(texture);
 				renderEngine.drawQuad(i * 32, row * 32, 32, 32, t.getTextureWidth() / 32, tile, t.getTextureID());
+			}
+		}
+	}
+
+	private void drawItems(Map map, int camX, int camY, int row) {
+		for (int i = camX - (width / 64) - 2; i < camX + (width / 64) + 2; i++) {
+			int item = map.getItem(i, row);
+			if (item != 0) {
+				Texture t = contentHub.getResources().getTexture(Item.getItem(item).getTexture());
+				renderEngine.drawQuad(i * 32, row * 32, 32, 32, t.getTextureWidth() / 32, Item.getItem(item).getTextureSlot(), t.getTextureID());
 			}
 		}
 	}
