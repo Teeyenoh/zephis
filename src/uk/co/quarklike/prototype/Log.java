@@ -66,6 +66,8 @@ public class Log {
 		System.out.println(out);
 		log.println(out);
 
+		if (Main.DEBUG)
+			e.printStackTrace();
 		e.printStackTrace(log);
 
 		Main.instance.stop();

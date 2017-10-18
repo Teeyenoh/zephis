@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
+import uk.co.quarklike.prototype.DatabaseParser;
 import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.map.Map;
@@ -31,6 +32,7 @@ public class GameManager implements Manager {
 	@Override
 	public void preInit(ContentHub contentHub) {
 		this.contentHub = contentHub;
+		DatabaseParser.parseDatabse("zephis.accdb");
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class GameManager implements Manager {
 		currentMap = new Map(MapData.fromFile("test.qm1"));
 		(player = new EntityLiving("Player", "tiles/grass.png")).register(currentMap);
 		player.setPosition(15, 15);
-		player.addItem(new ItemStack(Item.ingotCopper.getID(), 5));
+		player.addItem(new ItemStack(1, 5));
 	}
 
 	@Override
