@@ -9,6 +9,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Main;
+import uk.co.quarklike.prototype.engine.gui.GUIPanel;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.item.Item;
@@ -61,24 +62,36 @@ public class GraphicsManager implements Manager {
 			Main.instance.stop();
 
 		Map map = contentHub.getMapToDraw();
-		if (map != null)
+		if (map != null && contentHub.drawMap())
 			drawMap(map, contentHub.getCamera().getX(), contentHub.getCamera().getY(), contentHub.getCamera().getSubX(), contentHub.getCamera().getSubY());
 
-		int offs = 48;
-		int startY = (height / 2) - 32 - offs;
+		if (Main.DEBUG) {
+			int offs = 48;
+			int startY = (height / 2) - 32 - offs;
 
-		renderEngine.drawQuad(0, startY, 36, 36, 1, 0, 0);
+			renderEngine.drawQuad(0, startY, 36, 36, 1, 0, 0);
 
-		for (int i = contentHub.slot - 3; i < contentHub.slot + 4; i++) {
-			for (int j = contentHub.texture - 1; j < contentHub.texture + 2; j++) {
-				Texture t = contentHub.getResources().getTexture(j);
-				renderEngine.drawQuad(0 + (offs * (i - contentHub.slot)), startY - (offs * (j - contentHub.texture)), 32, 32, t.getTextureWidth() / 32, i, t.getTextureID());
+			for (int i = contentHub.slot - 3; i < contentHub.slot + 4; i++) {
+				for (int j = contentHub.texture - 1; j < contentHub.texture + 2; j++) {
+					Texture t = contentHub.getResources().getTexture(j);
+					renderEngine.drawQuad(0 + (offs * (i - contentHub.slot)), startY - (offs * (j - contentHub.texture)), 32, 32, t.getTextureWidth() / 32, i, t.getTextureID());
+				}
 			}
 		}
+
+		drawGUI();
 
 		Display.update();
 		Display.sync(60);
 
+	}
+
+	private void drawGUI() {
+		for (GUIPanel panel : contentHub.getGUI()) {
+			panel.draw(renderEngine);
+		}
+
+		contentHub.getGUI().clear();
 	}
 
 	private void drawMap(Map map, int camX, int camY, int subX, int subY) {

@@ -1,9 +1,12 @@
 package uk.co.quarklike.prototype.map.item;
 
+import java.util.HashMap;
+
 import uk.co.quarklike.prototype.Log;
 
 public class Item {
 	private static final Item[] items = new Item[256];
+	private static HashMap<String, Integer> itemMap = new HashMap<String, Integer>();
 
 	private int itemID;
 	private String itemName;
@@ -17,8 +20,10 @@ public class Item {
 		this.textureSlot = slot;
 		if (items[id - 1] != null)
 			Log.warn("Attempting to add item to slot: " + id + ", which is filled by item: " + items[id - 1].getName());
-		else
+		else {
 			items[id - 1] = this;
+			itemMap.put(name, id);
+		}
 	}
 
 	public int getID() {
@@ -39,5 +44,9 @@ public class Item {
 
 	public static Item getItem(int itemID) {
 		return items[itemID - 1];
+	}
+
+	public static Item getItem(String itemName) {
+		return items[itemMap.get(itemName)];
 	}
 }

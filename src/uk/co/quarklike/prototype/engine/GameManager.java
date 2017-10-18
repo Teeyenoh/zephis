@@ -7,6 +7,8 @@ import org.lwjgl.opengl.Display;
 import uk.co.quarklike.prototype.DatabaseParser;
 import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.Util;
+import uk.co.quarklike.prototype.engine.gamestate.GameState;
+import uk.co.quarklike.prototype.engine.gamestate.PlayingState;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.MapData;
 import uk.co.quarklike.prototype.map.entity.Entity;
@@ -18,6 +20,7 @@ public class GameManager implements Manager {
 	private ContentHub contentHub;
 	private Map currentMap;
 	private EntityLiving player;
+	private GameState currentState;
 
 	// Temp
 	private int tile;
@@ -37,7 +40,7 @@ public class GameManager implements Manager {
 
 	@Override
 	public void init() {
-
+		switchState(new PlayingState());
 	}
 
 	@Override
@@ -45,17 +48,15 @@ public class GameManager implements Manager {
 		currentMap = new Map(MapData.fromFile("test.qm1"));
 		(player = new EntityLiving("Player", "tiles/grass.png")).register(currentMap);
 		player.setPosition(15, 15);
-		player.addItem(new ItemStack(1, 5));
+		player.addItem(new ItemStack(Item.getItem("Copper Ingot").getID(), 5));
 	}
 
 	@Override
 	public void update() {
-		contentHub.setMapToDraw(currentMap);
-		contentHub.setCamera(player);
-		currentMap.requestTextures(contentHub.getResources());
+		if (currentState != null)
+			currentState.update(contentHub, currentMap);
 
-		for (Entity e : currentMap.getEntities())
-			e.update();
+		contentHub.setCamera(player);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
 			player.move(Map.NORTH);
@@ -151,6 +152,13 @@ public class GameManager implements Manager {
 			if (mouseWheel > 0)
 				collision = (byte) Util.wrap(collision + 1, 0, 3);
 		}
+	}
+
+	public void switchState(GameState newState) {
+		if (currentState != null)
+			currentState.deinit();
+		currentState = newState;
+		currentState.init();
 	}
 
 	@Override
