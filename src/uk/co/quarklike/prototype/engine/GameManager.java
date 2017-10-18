@@ -11,7 +11,6 @@ import uk.co.quarklike.prototype.engine.gamestate.GameState;
 import uk.co.quarklike.prototype.engine.gamestate.PlayingState;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.MapData;
-import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
 import uk.co.quarklike.prototype.map.item.Item;
 import uk.co.quarklike.prototype.map.item.ItemStack;

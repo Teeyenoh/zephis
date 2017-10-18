@@ -1,7 +1,6 @@
 package uk.co.quarklike.prototype.engine.gamestate;
 
 import uk.co.quarklike.prototype.engine.ContentHub;
-import uk.co.quarklike.prototype.engine.gui.GUIPanel;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 
