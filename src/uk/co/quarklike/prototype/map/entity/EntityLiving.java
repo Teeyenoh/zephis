@@ -1,6 +1,8 @@
 package uk.co.quarklike.prototype.map.entity;
 
 import uk.co.quarklike.prototype.map.Map;
+import uk.co.quarklike.prototype.map.item.Inventory;
+import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class EntityLiving extends Entity {
 	protected int speed = 2;
@@ -9,8 +11,11 @@ public class EntityLiving extends Entity {
 	protected byte direction;
 	protected byte queued = -1;
 
+	public Inventory body;
+
 	public EntityLiving(String name, String texture) {
 		super(name, texture);
+		body = new Inventory(10);
 	}
 
 	@Override
@@ -57,5 +62,15 @@ public class EntityLiving extends Entity {
 		this.direction = direction;
 		if (!map.isBlocked(x, y, direction))
 			moving = true;
+	}
+
+	public boolean addItem(ItemStack i) {
+		return body.addItem(i.getItemID(), i.getQuantity());
+	}
+
+	public void dropItem(ItemStack i) {
+		if (body.removeItem(i.getItemID(), i.getQuantity())) {
+			map.setItem(this.getX(), this.getY(), i.getItemID());
+		}
 	}
 }

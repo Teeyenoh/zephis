@@ -10,6 +10,8 @@ import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.MapData;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
+import uk.co.quarklike.prototype.map.item.Item;
+import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class GameManager implements Manager {
 	private ContentHub contentHub;
@@ -41,6 +43,7 @@ public class GameManager implements Manager {
 		currentMap = new Map(MapData.fromFile("test.qm1"));
 		(player = new EntityLiving("Player", "tiles/grass.png")).register(currentMap);
 		player.setPosition(15, 15);
+		player.addItem(new ItemStack(Item.ingotCopper.getID(), 5));
 	}
 
 	@Override
