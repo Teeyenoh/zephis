@@ -1,5 +1,6 @@
 package uk.co.quarklike.prototype.map;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -19,10 +20,18 @@ public class Map {
 
 	private MapData data;
 	private HashMap<Long, Entity> entities;
+	private ArrayList<Long> toRemove;
 
 	public Map(MapData data) {
 		this.data = data;
 		entities = new HashMap<Long, Entity>();
+		toRemove = new ArrayList<Long>();
+	}
+
+	public void update() {
+		for (long i : toRemove) {
+			entities.remove(i);
+		}
 	}
 
 	public int getTile(int x, int y, int layer) {
@@ -111,6 +120,10 @@ public class Map {
 		}
 		entities.put(id, e);
 		return id;
+	}
+
+	public void removeEntity(long e) {
+		toRemove.add(e);
 	}
 
 	private boolean isOutOfBounds(int x, int y, int layer) {

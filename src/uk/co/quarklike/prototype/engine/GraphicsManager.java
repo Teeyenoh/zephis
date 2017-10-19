@@ -2,19 +2,26 @@ package uk.co.quarklike.prototype.engine;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.opengl.Texture;
 
 import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Main;
-import uk.co.quarklike.prototype.engine.gui.GUIPanel;
+import uk.co.quarklike.prototype.engine.gui.GUI;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.item.Item;
 
 public class GraphicsManager implements Manager {
+	public static UnicodeFont defaultFont;
+
 	private ContentHub contentHub;
 	private RenderEngine renderEngine;
 	private int width, height;
@@ -24,6 +31,7 @@ public class GraphicsManager implements Manager {
 		this.contentHub = contentHub;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init() {
 		width = contentHub.getWindowWidth();
@@ -35,6 +43,15 @@ public class GraphicsManager implements Manager {
 			Display.create();
 		} catch (LWJGLException e) {
 			Log.err("Failed to create display object", e);
+		}
+
+		try {
+			defaultFont = new UnicodeFont("res/fonts/default.ttf", 14, false, false);
+			defaultFont.addAsciiGlyphs();
+			defaultFont.getEffects().add(new ColorEffect(Color.WHITE));
+			defaultFont.loadGlyphs();
+		} catch (SlickException e) {
+			Log.warn("Failed to load default font", e);
 		}
 
 		renderEngine = new RenderEngine();
@@ -87,7 +104,7 @@ public class GraphicsManager implements Manager {
 	}
 
 	private void drawGUI() {
-		for (GUIPanel panel : contentHub.getGUI()) {
+		for (GUI panel : contentHub.getGUI()) {
 			panel.draw(renderEngine);
 		}
 
@@ -148,7 +165,7 @@ public class GraphicsManager implements Manager {
 			int item = map.getItem(i, row);
 			if (item != 0) {
 				Texture t = contentHub.getResources().getTexture(Item.getItem(item).getTexture());
-				renderEngine.drawQuad(i * 32, row * 32, 32, 32, t.getTextureWidth() / 32, Item.getItem(item).getTextureSlot(), t.getTextureID());
+				renderEngine.drawQuad(i * 32, row * 32, 32, 32, t.getTextureWidth() / 32, Item.getItem(item).getTextureSlot() - 1, t.getTextureID());
 			}
 		}
 	}
@@ -167,8 +184,6 @@ public class GraphicsManager implements Manager {
 	}
 
 	private void drawEntities(Map map, int camX, int camY, int row) {
-		glColor3f(1.0f, 0.0f, 1.0f);
-
 		for (Entity e : map.getEntities()) {
 			int x = e.getX();
 			int y = e.getY();
@@ -181,8 +196,6 @@ public class GraphicsManager implements Manager {
 					}
 				}
 		}
-
-		glColor3f(1.0f, 1.0f, 1.0f);
 	}
 
 	@Override

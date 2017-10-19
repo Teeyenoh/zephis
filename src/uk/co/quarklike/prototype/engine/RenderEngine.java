@@ -2,7 +2,14 @@ package uk.co.quarklike.prototype.engine;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.UnicodeFont;
+
 public class RenderEngine {
+	public void drawText(int x, int y, UnicodeFont font, String text, Color colour) {
+		font.drawString(x, y, text, colour);
+	}
+	
 	public void drawQuad(int x, int y, int width, int height, int textureWidth, int textureSlot, int texture) {
 		float d = 1f / textureWidth;
 		int tX = textureSlot % textureWidth;

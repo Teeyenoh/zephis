@@ -140,6 +140,14 @@ public class GameManager implements Manager {
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_D) {
 					contentHub.slot = Util.clamp(contentHub.slot + 1, 0, 256);
 				}
+
+				if (Keyboard.getEventKey() == Keyboard.KEY_T) {
+					player.throwItem(new ItemStack(Item.getItem("Copper Ingot").getID(), 1));
+				}
+
+				if (Keyboard.getEventKey() == Keyboard.KEY_P) {
+					player.pickUpItem();
+				}
 			}
 		}
 

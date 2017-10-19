@@ -11,9 +11,9 @@ public class Item {
 	private int itemID;
 	private String itemName;
 	private String itemTexture;
-	private int textureSlot;
+	private short textureSlot;
 
-	public Item(int id, String name, String texture, int slot) {
+	public Item(int id, String name, String texture, short slot) {
 		this.itemID = id;
 		this.itemName = name;
 		this.itemTexture = texture;
@@ -38,7 +38,7 @@ public class Item {
 		return itemTexture;
 	}
 
-	public int getTextureSlot() {
+	public short getTextureSlot() {
 		return textureSlot;
 	}
 
@@ -47,6 +47,6 @@ public class Item {
 	}
 
 	public static Item getItem(String itemName) {
-		return items[itemMap.get(itemName)];
+		return getItem(itemMap.get(itemName));
 	}
 }

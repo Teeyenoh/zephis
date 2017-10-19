@@ -2,6 +2,7 @@ package uk.co.quarklike.prototype.map.entity;
 
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.item.Inventory;
+import uk.co.quarklike.prototype.map.item.Item;
 import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class EntityLiving extends Entity {
@@ -68,9 +69,26 @@ public class EntityLiving extends Entity {
 		return body.addItem(i.getItemID(), i.getQuantity());
 	}
 
+	public void pickUpItem() {
+		int item = map.getItem(getX(), getY());
+		if (item != 0) {
+			if (body.addItem(item, 1)) {
+				map.setItem(getX(), getY(), 0);
+			}
+		}
+	}
+
 	public void dropItem(ItemStack i) {
 		if (body.removeItem(i.getItemID(), i.getQuantity())) {
 			map.setItem(this.getX(), this.getY(), i.getItemID());
+		}
+	}
+
+	public void throwItem(ItemStack i) {
+		if (body.removeItem(i.getItemID(), 1)) {
+			Entity proj = new EntityProjectileItem(this.direction, i.getItemID());
+			proj.setPosition(x + Map.getDirectionalX(direction), y + Map.getDirectionalY(direction));
+			proj.register(map);
 		}
 	}
 }
