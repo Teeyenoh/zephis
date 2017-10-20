@@ -5,7 +5,7 @@ import org.newdawn.slick.Color;
 import uk.co.quarklike.prototype.engine.GraphicsManager;
 import uk.co.quarklike.prototype.engine.RenderEngine;
 
-public class GUIText extends GUI {
+public class GUIText extends GUIComponent {
 	public GUIText(int x, int y, int width, int height) {
 		super(x, y, width, height);
 	}

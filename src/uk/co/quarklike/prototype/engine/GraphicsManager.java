@@ -14,7 +14,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Main;
-import uk.co.quarklike.prototype.engine.gui.GUI;
+import uk.co.quarklike.prototype.engine.gui.windows.GUIWindow;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.item.Item;
@@ -54,7 +54,7 @@ public class GraphicsManager implements Manager {
 			Log.warn("Failed to load default font", e);
 		}
 
-		renderEngine = new RenderEngine();
+		renderEngine = new RenderEngine(contentHub);
 	}
 
 	@Override
@@ -104,7 +104,9 @@ public class GraphicsManager implements Manager {
 	}
 
 	private void drawGUI() {
-		for (GUI panel : contentHub.getGUI()) {
+		glLoadIdentity();
+		
+		for (GUIWindow panel : contentHub.getGUI()) {
 			panel.draw(renderEngine);
 		}
 

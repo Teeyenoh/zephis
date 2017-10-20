@@ -1,18 +1,18 @@
 package uk.co.quarklike.prototype.engine.gamestate;
 
 import uk.co.quarklike.prototype.engine.ContentHub;
-import uk.co.quarklike.prototype.map.Map;
 
 public class MainMenuState implements GameState {
-	@Override
-	public void init() {
+	private ContentHub contentHub;
 
+	@Override
+	public void init(ContentHub contentHub) {
+		this.contentHub = contentHub;
 	}
 
 	@Override
-	public void update(ContentHub contentHub, Map map) {
+	public void update() {
 		contentHub.setDrawMap(false);
-		
 	}
 
 	@Override

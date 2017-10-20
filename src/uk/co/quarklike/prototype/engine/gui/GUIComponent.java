@@ -2,10 +2,10 @@ package uk.co.quarklike.prototype.engine.gui;
 
 import uk.co.quarklike.prototype.engine.RenderEngine;
 
-public abstract class GUI {
+public abstract class GUIComponent {
 	protected int x, y, width, height;
 
-	public GUI(int x, int y, int width, int height) {
+	public GUIComponent(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;

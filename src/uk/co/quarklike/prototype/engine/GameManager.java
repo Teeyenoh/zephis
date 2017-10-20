@@ -39,7 +39,7 @@ public class GameManager implements Manager {
 
 	@Override
 	public void init() {
-		switchState(new PlayingState());
+
 	}
 
 	@Override
@@ -48,26 +48,19 @@ public class GameManager implements Manager {
 		(player = new EntityLiving("Player", "tiles/grass.png")).register(currentMap);
 		player.setPosition(15, 15);
 		player.addItem(new ItemStack(Item.getItem("Copper Ingot").getID(), 5));
+
+		switchState(new PlayingState(currentMap, player));
 	}
 
 	@Override
 	public void update() {
 		if (currentState != null)
-			currentState.update(contentHub, currentMap);
+			currentState.update();
 
-		contentHub.setCamera(player);
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-			player.move(Map.NORTH);
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-			player.move(Map.EAST);
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-			player.move(Map.SOUTH);
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-			player.move(Map.WEST);
+		if (contentHub.getNewState() != null) {
+			this.switchState(contentHub.getNewState());
+			contentHub.setNewState(null);
+		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_1))
 			layer = 0;
@@ -140,14 +133,6 @@ public class GameManager implements Manager {
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_D) {
 					contentHub.slot = Util.clamp(contentHub.slot + 1, 0, 256);
 				}
-
-				if (Keyboard.getEventKey() == Keyboard.KEY_T) {
-					player.throwItem(new ItemStack(Item.getItem("Copper Ingot").getID(), 1));
-				}
-
-				if (Keyboard.getEventKey() == Keyboard.KEY_P) {
-					player.pickUpItem();
-				}
 			}
 		}
 
@@ -165,7 +150,7 @@ public class GameManager implements Manager {
 		if (currentState != null)
 			currentState.deinit();
 		currentState = newState;
-		currentState.init();
+		currentState.init(contentHub);
 	}
 
 	@Override

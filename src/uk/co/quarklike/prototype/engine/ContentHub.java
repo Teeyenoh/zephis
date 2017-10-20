@@ -2,7 +2,8 @@ package uk.co.quarklike.prototype.engine;
 
 import java.util.ArrayList;
 
-import uk.co.quarklike.prototype.engine.gui.GUI;
+import uk.co.quarklike.prototype.engine.gamestate.GameState;
+import uk.co.quarklike.prototype.engine.gui.windows.GUIWindow;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 
@@ -14,8 +15,10 @@ public class ContentHub {
 	private Map mapToDraw;
 	private Entity camera;
 	private boolean drawMap;
+	
+	private GameState newState;
 
-	private ArrayList<GUI> gui = new ArrayList<GUI>();
+	private ArrayList<GUIWindow> gui = new ArrayList<GUIWindow>();
 
 	// Temp
 	public int slot;
@@ -69,11 +72,19 @@ public class ContentHub {
 		this.windowHeight = height;
 	}
 
-	public ArrayList<GUI> getGUI() {
+	public ArrayList<GUIWindow> getGUI() {
 		return gui;
 	}
 
-	public void addGUI(GUI gui) {
+	public void addGUI(GUIWindow gui) {
 		this.gui.add(gui);
+	}
+
+	public GameState getNewState() {
+		return newState;
+	}
+
+	public void setNewState(GameState newState) {
+		this.newState = newState;
 	}
 }

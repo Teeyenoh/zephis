@@ -6,10 +6,20 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.UnicodeFont;
 
 public class RenderEngine {
+	private ContentHub contentHub;
+
+	public RenderEngine(ContentHub contentHub) {
+		this.contentHub = contentHub;
+	}
+
 	public void drawText(int x, int y, UnicodeFont font, String text, Color colour) {
 		font.drawString(x, y, text, colour);
 	}
-	
+
+	public void drawQuad(int x, int y, int width, int height, String texture) {
+		drawQuad(x, y, width, height, 0, 0, 1, 0, 1, 1, 0, 1, contentHub.getResources().getTexture(texture).getTextureID());
+	}
+
 	public void drawQuad(int x, int y, int width, int height, int textureWidth, int textureSlot, int texture) {
 		float d = 1f / textureWidth;
 		int tX = textureSlot % textureWidth;

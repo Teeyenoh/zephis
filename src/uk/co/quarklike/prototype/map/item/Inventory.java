@@ -46,7 +46,7 @@ public class Inventory {
 	public boolean removeItem(int itemID, int quantity) {
 		ItemStack i = null;
 		if ((i = containsItem(itemID)) == null) {
-			return true;
+			return false;
 		} else {
 			if (i.getQuantity() >= quantity) {
 				i.addQuantity(-quantity);
