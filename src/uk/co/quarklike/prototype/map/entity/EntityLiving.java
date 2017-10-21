@@ -6,6 +6,7 @@ import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class EntityLiving extends Entity {
 	protected int speed = 2;
+	protected int nextSpeed;
 
 	protected boolean moving;
 	protected byte direction;
@@ -21,11 +22,13 @@ public class EntityLiving extends Entity {
 	@Override
 	public void update() {
 		handleMovement();
-		if (!moving)
+		if (!moving) {
+			speed = nextSpeed;
 			if (queued != -1) {
 				move(queued);
 				queued = -1;
 			}
+		}
 	}
 
 	private void handleMovement() {
@@ -97,5 +100,9 @@ public class EntityLiving extends Entity {
 
 	public Inventory getInventory() {
 		return body;
+	}
+
+	public void setSpeed(int speed) {
+		this.nextSpeed = speed;
 	}
 }
