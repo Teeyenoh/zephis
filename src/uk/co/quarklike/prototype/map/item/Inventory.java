@@ -31,13 +31,13 @@ public class Inventory {
 	public boolean addItem(int itemID, int quantity) {
 		ItemStack i = null;
 		if ((i = containsItem(itemID)) == null) {
-			items.add(new ItemStack(itemID, quantity));
-			return true;
-		} else {
 			if (items.size() < maxSize) {
-				i.addQuantity(quantity);
+				items.add(new ItemStack(itemID, quantity));
 				return true;
 			}
+		} else {
+			i.addQuantity(quantity);
+			return true;
 		}
 
 		return false;
@@ -83,5 +83,9 @@ public class Inventory {
 			items.sort(sortByQuantity);
 			break;
 		}
+	}
+
+	public ArrayList<ItemStack> getItems() {
+		return items;
 	}
 }

@@ -13,7 +13,12 @@ public class RenderEngine {
 	}
 
 	public void drawText(int x, int y, UnicodeFont font, String text, Color colour) {
+		font.drawString(x + 1, y + 1, text, Color.black);
 		font.drawString(x, y, text, colour);
+	}
+
+	public void drawQuad(int x, int y, int width, int height, int slot, String texture) {
+		drawQuad(x, y, width, height, contentHub.getResources().getTexture(texture).getTextureWidth() / width, slot, contentHub.getResources().getTexture(texture).getTextureID());
 	}
 
 	public void drawQuad(int x, int y, int width, int height, String texture) {

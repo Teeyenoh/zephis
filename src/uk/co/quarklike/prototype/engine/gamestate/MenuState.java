@@ -24,7 +24,7 @@ public class MenuState implements GameState {
 		this.contentHub = contentHub;
 
 		contentHub.setDrawMap(false);
-		inventory = new GUIInventory(contentHub);
+		inventory = new GUIInventory(contentHub, player);
 	}
 
 	@Override

@@ -18,6 +18,6 @@ public class ItemStack {
 	}
 
 	public void addQuantity(int quantity) {
-		quantity += quantity;
+		this.quantity += quantity;
 	}
 }

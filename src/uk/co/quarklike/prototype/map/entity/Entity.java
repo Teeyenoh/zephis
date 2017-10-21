@@ -12,7 +12,7 @@ public class Entity {
 	protected Map map;
 	protected int x, y;
 	protected short subX, subY;
-	protected short textureSlot = 1;
+	protected short textureSlot;
 
 	public Entity(String name, String texture) {
 		this.entityName = name;

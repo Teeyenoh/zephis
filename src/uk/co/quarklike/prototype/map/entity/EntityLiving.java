@@ -94,4 +94,8 @@ public class EntityLiving extends Entity {
 			}
 		}
 	}
+
+	public Inventory getInventory() {
+		return body;
+	}
 }

@@ -21,6 +21,7 @@ import uk.co.quarklike.prototype.map.item.Item;
 
 public class GraphicsManager implements Manager {
 	public static UnicodeFont defaultFont;
+	public static UnicodeFont titleFont;
 
 	private ContentHub contentHub;
 	private RenderEngine renderEngine;
@@ -50,8 +51,13 @@ public class GraphicsManager implements Manager {
 			defaultFont.addAsciiGlyphs();
 			defaultFont.getEffects().add(new ColorEffect(Color.WHITE));
 			defaultFont.loadGlyphs();
+
+			titleFont = new UnicodeFont("res/fonts/default.ttf", 24, true, false);
+			titleFont.addAsciiGlyphs();
+			titleFont.getEffects().add(new ColorEffect(Color.WHITE));
+			titleFont.loadGlyphs();
 		} catch (SlickException e) {
-			Log.warn("Failed to load default font", e);
+			Log.warn("Failed to load font", e);
 		}
 
 		renderEngine = new RenderEngine(contentHub);
@@ -105,7 +111,7 @@ public class GraphicsManager implements Manager {
 
 	private void drawGUI() {
 		glLoadIdentity();
-		
+
 		for (GUIWindow panel : contentHub.getGUI()) {
 			panel.draw(renderEngine);
 		}
@@ -167,7 +173,7 @@ public class GraphicsManager implements Manager {
 			int item = map.getItem(i, row);
 			if (item != 0) {
 				Texture t = contentHub.getResources().getTexture(Item.getItem(item).getTexture());
-				renderEngine.drawQuad(i * 32, row * 32, 32, 32, t.getTextureWidth() / 32, Item.getItem(item).getTextureSlot() - 1, t.getTextureID());
+				renderEngine.drawQuad(i * 32, row * 32, 32, 32, t.getTextureWidth() / 32, Item.getItem(item).getTextureSlot(), t.getTextureID());
 			}
 		}
 	}
@@ -191,11 +197,9 @@ public class GraphicsManager implements Manager {
 			int y = e.getY();
 			if (y == row)
 				if (x >= camX - ((width / 64) - 2) && x <= camX + ((width / 64) + 2) && y >= camY - ((height / 64) - 2) && y <= camY + ((height / 64) + 2)) {
-					int slot = e.getTextureSlot() - 1;
-					if (slot != -1) {
-						Texture t = contentHub.getResources().getTexture(e.getTexture());
-						renderEngine.drawQuad((e.getX() * 32) + e.getSubX(), (e.getY() * 32) + e.getSubY() - 12, 32, 32, t.getTextureWidth() / 32, slot, t.getTextureID());
-					}
+					int slot = e.getTextureSlot();
+					Texture t = contentHub.getResources().getTexture(e.getTexture());
+					renderEngine.drawQuad((e.getX() * 32) + e.getSubX(), (e.getY() * 32) + e.getSubY() - 12, 32, 32, t.getTextureWidth() / 32, slot, t.getTextureID());
 				}
 		}
 	}
