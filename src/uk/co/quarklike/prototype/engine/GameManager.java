@@ -4,10 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
-import uk.co.quarklike.prototype.DatabaseParser;
-import uk.co.quarklike.prototype.Main;
-import uk.co.quarklike.prototype.SaveManager;
-import uk.co.quarklike.prototype.Util;
+import uk.co.quarklike.prototype.*;
 import uk.co.quarklike.prototype.engine.gamestate.GameState;
 import uk.co.quarklike.prototype.engine.gamestate.PlayingState;
 import uk.co.quarklike.prototype.map.Map;
@@ -35,17 +32,20 @@ public class GameManager implements Manager {
 	@Override
 	public void preInit(ContentHub contentHub) {
 		this.contentHub = contentHub;
+		Log.info("Loading database...");
 		DatabaseParser.parseDatabse("zephis.accdb");
 	}
 
 	@Override
 	public void init() {
+		Log.info("Loading map...");
 		currentMap = new Map(MapData.fromFile("test.qm1"));
 		player = new EntityLiving("Player", "tiles/grass.png");
 	}
 
 	@Override
 	public void postInit() {
+		Log.info("Loading save file...");
 		SaveManager.readFile(currentMap, player, "testsave.qs1");
 		switchState(new PlayingState(currentMap, player));
 	}

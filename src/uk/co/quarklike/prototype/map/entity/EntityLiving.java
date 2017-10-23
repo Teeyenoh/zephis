@@ -12,11 +12,11 @@ public class EntityLiving extends Entity {
 	protected byte direction;
 	protected byte queued = -1;
 
-	public Inventory body;
+	protected Inventory inventory;
 
 	public EntityLiving(String name, String texture) {
 		super(name, texture);
-		body = new Inventory(10);
+		inventory = new Inventory(10);
 	}
 
 	public void loadPlayer(String name, int x, int y, byte subX, byte subY, byte direction, boolean moving) {
@@ -78,26 +78,30 @@ public class EntityLiving extends Entity {
 	}
 
 	public boolean addItem(ItemStack i) {
-		return body.addItem(i.getItemID(), i.getQuantity());
+		return inventory.addItem(i.getItemID(), i.getQuantity());
 	}
 
 	public void pickUpItem() {
-		int item = map.getItem(getX(), getY());
-		if (item != 0) {
-			if (body.addItem(item, (byte) 1)) {
-				map.setItem(getX(), getY(), 0);
-			}
-		}
+		// int item = map.getItem(getX(), getY());
+		// if (item != 0) {
+		// if (inventory.addItem(item, (byte) 1)) {
+		// map.setItem(getX(), getY(), 0);
+		// }
+		// }
 	}
 
 	public void dropItem(ItemStack i) {
-		if (body.removeItem(i.getItemID(), i.getQuantity())) {
-			map.setItem(this.getX(), this.getY(), i.getItemID());
+		if (inventory.removeItem(i.getItemID(), 1)) {
+			map.addItem(this.getX(), this.getY(), i.getItemID(), (byte) 1);
 		}
 	}
 
+	public void dropItem(int item) {
+		dropItem(inventory.getItems().get(item));
+	}
+
 	public void throwItem(ItemStack i) {
-		if (body.removeItem(i.getItemID(), 1)) {
+		if (inventory.removeItem(i.getItemID(), 1)) {
 			if (map.getCollision(x, y, direction)) {
 				dropItem(i);
 			} else {
@@ -109,7 +113,7 @@ public class EntityLiving extends Entity {
 	}
 
 	public Inventory getInventory() {
-		return body;
+		return inventory;
 	}
 
 	public void setSpeed(int speed) {

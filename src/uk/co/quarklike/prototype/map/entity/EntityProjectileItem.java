@@ -10,7 +10,7 @@ public class EntityProjectileItem extends EntityProjectile {
 	public EntityProjectileItem(byte direction, int itemID) {
 		super(Item.getItem(itemID).getName(), Item.getItem(itemID).getTexture(), direction, Physics.maxRange(15, 1f, 1.5f));
 		this.itemID = itemID;
-		this.body.addItem(itemID, (byte) 1);
+		this.inventory.addItem(itemID, (byte) 1);
 	}
 
 	@Override

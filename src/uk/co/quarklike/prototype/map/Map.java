@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.lwjgl.util.vector.Vector4f;
+
+import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.engine.ResourceManager;
 import uk.co.quarklike.prototype.map.entity.Entity;
+import uk.co.quarklike.prototype.map.item.Inventory;
+import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class Map {
 	public static final int TILE_LAYERS = 9;
 	public static final int COLLISION_LAYER = 18;
-	public static final int ITEM_LAYER = 19;
 
 	public static final byte NORTH = 0;
 	public static final byte EAST = 1;
@@ -21,10 +25,17 @@ public class Map {
 	private MapData data;
 	private HashMap<Long, Entity> entities;
 	private ArrayList<Long> toRemove;
+	private Inventory[][] items;
 
 	public Map(MapData data) {
 		this.data = data;
 		entities = new HashMap<Long, Entity>();
+		items = new Inventory[getWidth()][getHeight()];
+		for (int i = 0; i < getWidth(); i++) {
+			for (int j = 0; j < getHeight(); j++) {
+				items[i][j] = new Inventory(10);
+			}
+		}
 		toRemove = new ArrayList<Long>();
 	}
 
@@ -65,8 +76,10 @@ public class Map {
 		}
 	}
 
-	public int getItem(int x, int y) {
-		return data.getValue(x, y, ITEM_LAYER);
+	public Inventory getItem(int x, int y) {
+		if (isOutOfBounds(x, y, 0))
+			return null;
+		return items[x][y];
 	}
 
 	public void setTile(int x, int y, int layer, int tile) {
@@ -97,8 +110,8 @@ public class Map {
 		data.setValue(x, y, COLLISION_LAYER, v);
 	}
 
-	public void setItem(int x, int y, int itemID) {
-		data.setValue(x, y, ITEM_LAYER, itemID);
+	public void addItem(int x, int y, int itemID, byte quantity) {
+		items[x][y].addItem(itemID, quantity);
 	}
 
 	public boolean isBlocked(int x, int y, byte direction) {
@@ -185,6 +198,18 @@ public class Map {
 	public int getMapID() {
 		return data.getMapID();
 	}
-	
-	
+
+	public ArrayList<Vector4f> getItems() {
+		ArrayList<Vector4f> out = new ArrayList<Vector4f>();
+
+		for (int i = 0; i < getWidth(); i++) {
+			for (int j = 0; j < getHeight(); j++) {
+				for (ItemStack item : items[i][j].getItems()) {
+					out.add(new Vector4f(i, j, item.getItemID(), item.getQuantity()));
+				}
+			}
+		}
+
+		return out;
+	}
 }

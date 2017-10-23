@@ -18,6 +18,7 @@ import uk.co.quarklike.prototype.engine.gui.windows.GUIWindow;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.item.Item;
+import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class GraphicsManager implements Manager {
 	public static UnicodeFont defaultFont;
@@ -38,6 +39,7 @@ public class GraphicsManager implements Manager {
 		width = contentHub.getWindowWidth();
 		height = contentHub.getWindowHeight();
 
+		Log.info("Loading display...");
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.setTitle(Main.TITLE);
@@ -46,6 +48,7 @@ public class GraphicsManager implements Manager {
 			Log.err("Failed to create display object", e);
 		}
 
+		Log.info("Loading fonts...");
 		try {
 			defaultFont = new UnicodeFont("res/fonts/default.ttf", 14, false, false);
 			defaultFont.addAsciiGlyphs();
@@ -170,11 +173,14 @@ public class GraphicsManager implements Manager {
 
 	private void drawItems(Map map, int camX, int camY, int row) {
 		for (int i = camX - (width / 64) - 2; i < camX + (width / 64) + 2; i++) {
-			int item = map.getItem(i, row);
-			if (item != 0) {
-				Texture t = contentHub.getResources().getTexture(Item.getItem(item).getTexture());
-				renderEngine.drawQuad(i * 32, row * 32, 32, 32, t.getTextureWidth() / 32, Item.getItem(item).getTextureSlot(), t.getTextureID());
-			}
+			if (map.getItem(i, row) != null)
+				if (map.getItem(i, row).getItems().size() != 0) {
+					int item = map.getItem(i, row).getItems().get(0).getItemID();
+					if (item != 0) {
+						Texture t = contentHub.getResources().getTexture(Item.getItem(item).getTexture());
+						renderEngine.drawQuad(i * 32, row * 32, 32, 32, t.getTextureWidth() / 32, Item.getItem(item).getTextureSlot(), t.getTextureID());
+					}
+				}
 		}
 	}
 

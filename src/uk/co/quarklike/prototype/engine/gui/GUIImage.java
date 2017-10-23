@@ -14,4 +14,8 @@ public class GUIImage extends GUIComponent {
 	public void draw(RenderEngine renderEngine) {
 		renderEngine.drawQuad(x, y, width, height, texture);
 	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
 }

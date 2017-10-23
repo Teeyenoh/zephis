@@ -48,7 +48,6 @@ public class Main implements Runnable {
 		m_game = new GameManager();
 		currentManager = null;
 
-		Log.info("Pre-Init...");
 		currentManager = m_resource;
 		m_resource.preInit(contentHub);
 		currentManager = m_graphics;
@@ -57,7 +56,6 @@ public class Main implements Runnable {
 		m_game.preInit(contentHub);
 		currentManager = null;
 
-		Log.info("Init...");
 		currentManager = m_resource;
 		m_resource.init();
 		currentManager = m_graphics;
@@ -66,7 +64,6 @@ public class Main implements Runnable {
 		m_game.init();
 		currentManager = null;
 
-		Log.info("Post-Init...");
 		currentManager = m_resource;
 		m_resource.postInit();
 		currentManager = m_graphics;

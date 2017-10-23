@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+
+import org.lwjgl.util.vector.Vector4f;
 
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
@@ -32,11 +35,21 @@ public class SaveManager {
 			writeByte(out, player.getDirection());
 			writeBool(out, player.isMoving());
 
-			writeShort(out, (short) player.body.getItems().size());
+			writeShort(out, (short) player.getInventory().getItems().size());
 
-			for (ItemStack i : player.body.getItems()) {
+			for (ItemStack i : player.getInventory().getItems()) {
 				writeInt(out, i.getItemID());
 				writeByte(out, i.getQuantity());
+			}
+
+			ArrayList<Vector4f> items = map.getItems();
+			writeShort(out, (short) items.size());
+
+			for (Vector4f item : items) {
+				writeInt(out, (int) item.getX());
+				writeInt(out, (int) item.getY());
+				writeInt(out, (int) item.getZ());
+				writeByte(out, (byte) item.getW());
 			}
 
 			out.close();
@@ -70,12 +83,22 @@ public class SaveManager {
 			player.loadPlayer(playerName, playerX, playerY, playerSubX, playerSubY, direction, moving);
 			player.register(map);
 
-			short items = buffer.getShort();
+			short invItems = buffer.getShort();
 
-			for (int i = 0; i < items; i++) {
+			for (int i = 0; i < invItems; i++) {
 				int itemID = buffer.getInt();
 				byte quantity = buffer.get();
 				player.addItem(new ItemStack(itemID, quantity));
+			}
+
+			short mapItems = buffer.getShort();
+
+			for (int i = 0; i < mapItems; i++) {
+				int x = buffer.getInt();
+				int y = buffer.getInt();
+				int itemID = buffer.getInt();
+				byte quant = buffer.get();
+				map.addItem(x, y, itemID, quant);
 			}
 
 			in.close();
