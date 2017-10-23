@@ -40,24 +40,40 @@ public class Main implements Runnable {
 
 		contentHub = new ContentHub();
 
+		currentManager = m_resource;
 		m_resource = new ResourceManager();
+		currentManager = m_graphics;
 		m_graphics = new GraphicsManager();
+		currentManager = m_game;
 		m_game = new GameManager();
+		currentManager = null;
 
 		Log.info("Pre-Init...");
+		currentManager = m_resource;
 		m_resource.preInit(contentHub);
+		currentManager = m_graphics;
 		m_graphics.preInit(contentHub);
+		currentManager = m_game;
 		m_game.preInit(contentHub);
+		currentManager = null;
 
 		Log.info("Init...");
+		currentManager = m_resource;
 		m_resource.init();
+		currentManager = m_graphics;
 		m_graphics.init();
+		currentManager = m_game;
 		m_game.init();
+		currentManager = null;
 
 		Log.info("Post-Init...");
+		currentManager = m_resource;
 		m_resource.postInit();
+		currentManager = m_graphics;
 		m_graphics.postInit();
+		currentManager = m_game;
 		m_game.postInit();
+		currentManager = null;
 	}
 
 	public void update() {
@@ -67,12 +83,17 @@ public class Main implements Runnable {
 		m_resource.update();
 		currentManager = m_graphics;
 		m_graphics.update();
+		currentManager = null;
 	}
 
 	public void deinit() {
+		currentManager = m_game;
 		m_game.deinit();
+		currentManager = m_graphics;
 		m_graphics.deinit();
+		currentManager = m_resource;
 		m_resource.deinit();
+		currentManager = null;
 		Log.deinitLog();
 	}
 

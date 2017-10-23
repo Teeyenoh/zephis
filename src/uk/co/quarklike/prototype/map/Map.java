@@ -113,7 +113,7 @@ public class Map {
 
 	public long addEntity(Entity e) {
 		if (entities.containsValue(e))
-			return e.getID();
+			return e.getEntityID();
 		long id = 0;
 		while (id == 0 || entities.containsKey(id)) {
 			id = Main.instance.getRand().nextLong();
@@ -181,4 +181,10 @@ public class Map {
 	public void save(String fileName) {
 		data.saveToFile(fileName);
 	}
+
+	public int getMapID() {
+		return data.getMapID();
+	}
+	
+	
 }

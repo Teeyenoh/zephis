@@ -19,6 +19,16 @@ public class EntityLiving extends Entity {
 		body = new Inventory(10);
 	}
 
+	public void loadPlayer(String name, int x, int y, byte subX, byte subY, byte direction, boolean moving) {
+		this.entityName = name;
+		this.x = x;
+		this.y = y;
+		this.subX = subX;
+		this.subY = subY;
+		this.direction = direction;
+		this.moving = moving;
+	}
+
 	@Override
 	public void update() {
 		handleMovement();
@@ -43,7 +53,7 @@ public class EntityLiving extends Entity {
 				moving = false;
 			else if (subX == 16 * (Map.getDirectionalX(direction) / Math.abs(Map.getDirectionalX(direction)))) {
 				x += Map.getDirectionalX(direction);
-				subX = (short) (16 * -(Map.getDirectionalX(direction) / Math.abs(Map.getDirectionalX(direction))));
+				subX = (byte) (16 * -(Map.getDirectionalX(direction) / Math.abs(Map.getDirectionalX(direction))));
 			}
 
 		if (Map.getDirectionalY(direction) != 0)
@@ -51,7 +61,7 @@ public class EntityLiving extends Entity {
 				moving = false;
 			else if (subY == 16 * (Map.getDirectionalY(direction) / Math.abs(Map.getDirectionalY(direction)))) {
 				y += Map.getDirectionalY(direction);
-				subY = (short) (16 * -(Map.getDirectionalY(direction) / Math.abs(Map.getDirectionalY(direction))));
+				subY = (byte) (16 * -(Map.getDirectionalY(direction) / Math.abs(Map.getDirectionalY(direction))));
 			}
 	}
 
@@ -74,7 +84,7 @@ public class EntityLiving extends Entity {
 	public void pickUpItem() {
 		int item = map.getItem(getX(), getY());
 		if (item != 0) {
-			if (body.addItem(item, 1)) {
+			if (body.addItem(item, (byte) 1)) {
 				map.setItem(getX(), getY(), 0);
 			}
 		}
@@ -104,5 +114,13 @@ public class EntityLiving extends Entity {
 
 	public void setSpeed(int speed) {
 		this.nextSpeed = speed;
+	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public byte getDirection() {
+		return direction;
 	}
 }

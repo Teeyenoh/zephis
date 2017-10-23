@@ -28,7 +28,7 @@ public class Inventory {
 		items = new ArrayList<ItemStack>();
 	}
 
-	public boolean addItem(int itemID, int quantity) {
+	public boolean addItem(int itemID, byte quantity) {
 		ItemStack i = null;
 		if ((i = containsItem(itemID)) == null) {
 			if (items.size() < maxSize) {

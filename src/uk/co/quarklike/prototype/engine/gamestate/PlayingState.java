@@ -52,7 +52,7 @@ public class PlayingState implements GameState {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
 				if (Keyboard.getEventKey() == Keyboard.KEY_T) {
-					player.throwItem(new ItemStack(Item.getItem("Copper Ingot").getID(), 1));
+					player.throwItem(new ItemStack(Item.getItem("Copper Ingot").getID(), (byte) 1));
 				}
 
 				if (Keyboard.getEventKey() == Keyboard.KEY_P) {

@@ -6,6 +6,7 @@ import org.lwjgl.opengl.Display;
 
 import uk.co.quarklike.prototype.DatabaseParser;
 import uk.co.quarklike.prototype.Main;
+import uk.co.quarklike.prototype.SaveManager;
 import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.engine.gamestate.GameState;
 import uk.co.quarklike.prototype.engine.gamestate.PlayingState;
@@ -39,16 +40,13 @@ public class GameManager implements Manager {
 
 	@Override
 	public void init() {
-
+		currentMap = new Map(MapData.fromFile("test.qm1"));
+		player = new EntityLiving("Player", "tiles/grass.png");
 	}
 
 	@Override
 	public void postInit() {
-		currentMap = new Map(MapData.fromFile("test.qm1"));
-		(player = new EntityLiving("Player", "tiles/grass.png")).register(currentMap);
-		player.setPosition(15, 15);
-		player.addItem(new ItemStack(Item.getItem("Copper Ingot").getID(), 5));
-
+		SaveManager.readFile(currentMap, player, "testsave.qs1");
 		switchState(new PlayingState(currentMap, player));
 	}
 
@@ -155,7 +153,9 @@ public class GameManager implements Manager {
 
 	@Override
 	public void deinit() {
-		currentMap.save("test.qm1");
+		if (Main.DEBUG)
+			currentMap.save("test.qm1");
+		SaveManager.saveFile(currentMap, player, "testsave.qs1");
 	}
 
 	@Override

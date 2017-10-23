@@ -114,4 +114,8 @@ public class MapData {
 			e.printStackTrace();
 		}
 	}
+	
+	public int getMapID() {
+		return mapID;
+	}
 }

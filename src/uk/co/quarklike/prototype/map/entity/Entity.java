@@ -11,8 +11,8 @@ public class Entity {
 	protected long entityID;
 	protected Map map;
 	protected int x, y;
-	protected short subX, subY;
-	protected short textureSlot;
+	protected byte subX, subY;
+	protected byte textureSlot;
 
 	public Entity(String name, String texture) {
 		this.entityName = name;
@@ -36,11 +36,11 @@ public class Entity {
 		return y;
 	}
 
-	public short getSubX() {
+	public byte getSubX() {
 		return subX;
 	}
 
-	public short getSubY() {
+	public byte getSubY() {
 		return subY;
 	}
 
@@ -63,7 +63,11 @@ public class Entity {
 		return textureSlot;
 	}
 
-	public long getID() {
+	public long getEntityID() {
 		return entityID;
+	}
+
+	public int getMapID() {
+		return map.getMapID();
 	}
 }

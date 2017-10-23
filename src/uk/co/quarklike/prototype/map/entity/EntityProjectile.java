@@ -29,6 +29,6 @@ public class EntityProjectile extends EntityLiving {
 	}
 
 	protected void finish() {
-		map.removeEntity(this.getID());
+		map.removeEntity(this.getEntityID());
 	}
 }

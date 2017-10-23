@@ -2,9 +2,9 @@ package uk.co.quarklike.prototype.map.item;
 
 public class ItemStack {
 	private int itemID;
-	private int quantity;
+	private byte quantity;
 
-	public ItemStack(int itemID, int stackSize) {
+	public ItemStack(int itemID, byte stackSize) {
 		this.itemID = itemID;
 		this.quantity = stackSize;
 	}
@@ -13,7 +13,7 @@ public class ItemStack {
 		return itemID;
 	}
 
-	public int getQuantity() {
+	public byte getQuantity() {
 		return quantity;
 	}
 
