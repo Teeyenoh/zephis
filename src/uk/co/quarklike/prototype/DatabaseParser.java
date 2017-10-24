@@ -18,7 +18,7 @@ public class DatabaseParser {
 
 			Table items = database.getTable("items");
 			for (Row r : items) {
-				new Item(r.getInt("itemID"), r.getString("itemName"), "items/" + r.getString("itemTexture"), Short.parseShort(Integer.toString(r.getInt("textureSlot"))));
+				new Item(r.getInt("itemID"), r.getString("itemName"), r.getString("itemType"), "items/" + r.getString("itemTexture"), Short.parseShort(Integer.toString(r.getInt("textureSlot"))));
 			}
 
 			Table materials = database.getTable("materials");

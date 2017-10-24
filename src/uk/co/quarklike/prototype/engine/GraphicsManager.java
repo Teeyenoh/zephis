@@ -18,7 +18,6 @@ import uk.co.quarklike.prototype.engine.gui.windows.GUIWindow;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.item.Item;
-import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class GraphicsManager implements Manager {
 	public static UnicodeFont defaultFont;

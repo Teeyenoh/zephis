@@ -12,6 +12,7 @@ public class EntityProjectile extends EntityLiving {
 		this.range = range;
 	}
 
+	@Override
 	public void update() {
 		if (startX == -1 && startY == -1) {
 			startX = getX();

@@ -6,6 +6,6 @@ public class Physics {
 		float u = impulse / mass;
 		float g = -9.81f;
 		float time = (float) ((-Math.sqrt(-2 * (g * height))) / g);
-		return (int) Math.round(u * time);
+		return Math.round(u * time);
 	}
 }

@@ -15,6 +15,7 @@ public class RenderEngine {
 	public void drawText(int x, int y, UnicodeFont font, String text, Color colour) {
 		font.drawString(x + 1, y + 1, text, Color.black);
 		font.drawString(x, y, text, colour);
+		glColor3f(1, 1, 1);
 	}
 
 	public void drawQuad(int x, int y, int width, int height, int slot, String texture) {

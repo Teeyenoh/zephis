@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import org.lwjgl.util.vector.Vector4f;
 
-import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.engine.ResourceManager;
 import uk.co.quarklike.prototype.map.entity.Entity;

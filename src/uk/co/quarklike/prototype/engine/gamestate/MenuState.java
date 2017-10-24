@@ -30,6 +30,10 @@ public class MenuState implements GameState {
 		contentHub.setDrawMap(false);
 		inventory = new GUIInventory(contentHub, player);
 	}
+	
+	private void closeMenu() {
+		contentHub.setNewState(new PlayingState(map, player));
+	}
 
 	@Override
 	public void update() {
@@ -38,11 +42,21 @@ public class MenuState implements GameState {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
 				if (Keyboard.getEventKey() == Keyboard.KEY_I) {
-					contentHub.setNewState(new PlayingState(map, player));
+					closeMenu();
 				}
 
 				if (Keyboard.getEventKey() == Keyboard.KEY_D) {
 					player.dropItem(item);
+				}
+
+				if (Keyboard.getEventKey() == Keyboard.KEY_T) {
+					player.throwItem(item);
+					closeMenu();
+					
+				}
+
+				if (Keyboard.getEventKey() == Keyboard.KEY_Z) {
+					
 				}
 			}
 		}

@@ -112,6 +112,10 @@ public class EntityLiving extends Entity {
 		}
 	}
 
+	public void throwItem(int item) {
+		throwItem(inventory.getItems().get(item));
+	}
+
 	public Inventory getInventory() {
 		return inventory;
 	}

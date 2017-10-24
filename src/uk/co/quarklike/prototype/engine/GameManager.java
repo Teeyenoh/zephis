@@ -10,8 +10,6 @@ import uk.co.quarklike.prototype.engine.gamestate.PlayingState;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.MapData;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
-import uk.co.quarklike.prototype.map.item.Item;
-import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class GameManager implements Manager {
 	private ContentHub contentHub;
@@ -38,6 +36,7 @@ public class GameManager implements Manager {
 
 	@Override
 	public void init() {
+		Language.initLanguage("en_GB");
 		Log.info("Loading map...");
 		currentMap = new Map(MapData.fromFile("test.qm1"));
 		player = new EntityLiving("Player", "tiles/grass.png");

@@ -10,10 +10,15 @@ public class Item {
 
 	private int itemID;
 	private String itemName;
+	private ItemType itemType;
 	private String itemTexture;
 	private short textureSlot;
 
-	public Item(int id, String name, String texture, short slot) {
+	public static final ItemType itDefault = new ItemType();
+	public static final ItemType itFood = new ItemTypeConsumable("GUI_WINDOW_INVENTORY_COMMAND_EAT");
+	public static final ItemType itDrink = new ItemTypeConsumable("GUI_WINDOW_INVENTORY_COMMAND_DRINK");
+
+	public Item(int id, String name, String itemType, String texture, short slot) {
 		this.itemID = id;
 		this.itemName = name;
 		this.itemTexture = texture;
@@ -24,6 +29,18 @@ public class Item {
 			items[id - 1] = this;
 			itemMap.put(name, id);
 		}
+
+		switch (itemType) {
+		case "DEFAULT":
+			this.itemType = itDefault;
+			return;
+		case "FOOD":
+			this.itemType = itFood;
+			return;
+		case "DRINK":
+			this.itemType = itDrink;
+			return;
+		}
 	}
 
 	public int getID() {
@@ -32,6 +49,10 @@ public class Item {
 
 	public String getName() {
 		return itemName;
+	}
+
+	public ItemType getItemType() {
+		return itemType;
 	}
 
 	public String getTexture() {
