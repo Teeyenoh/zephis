@@ -10,6 +10,7 @@ import uk.co.quarklike.prototype.engine.gui.GUIText;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
 import uk.co.quarklike.prototype.map.item.Item;
 import uk.co.quarklike.prototype.map.item.ItemStack;
+import uk.co.quarklike.prototype.map.item.ItemType;
 
 public class GUIInventory extends GUIWindow {
 	private EntityLiving player;
@@ -46,11 +47,12 @@ public class GUIInventory extends GUIWindow {
 			comps.add(new GUIText(farX, yOffs, GraphicsManager.defaultFont, Color.white, "x " + i.getQuantity(), GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
 		}
 
-		boolean useable = Item.getItem(player.getInventory().getItems().get(item).getItemID()).getItemType().isUseable();
+		ItemType itemType = Item.getItem(player.getInventory().getItems().get(item).getItemID()).getItemType();
+		boolean useable = itemType.isUseable();
 
 		comps.add(new GUIText(nearX, farY, GraphicsManager.defaultFont, Color.white, "GUI_WINDOW_INVENTORY_COMMAND_DROP", GUIText.ALIGN_LEFT, GUIText.CASE_TITLE));
 		comps.add(new GUIText(x, farY, GraphicsManager.defaultFont, Color.white, "GUI_WINDOW_INVENTORY_COMMAND_THROW", GUIText.ALIGN_CENTRE, GUIText.CASE_TITLE));
-		comps.add(new GUIText(farX, farY, GraphicsManager.defaultFont, useable ? Color.white : Color.gray, "GUI_WINDOW_INVENTORY_COMMAND_USE", GUIText.ALIGN_RIGHT, GUIText.CASE_TITLE));
+		comps.add(new GUIText(farX, farY, GraphicsManager.defaultFont, useable ? Color.white : Color.gray, itemType.getUseText(), GUIText.ALIGN_RIGHT, GUIText.CASE_TITLE));
 
 		setItem(item);
 	}

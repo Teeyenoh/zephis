@@ -33,13 +33,13 @@ public class Item {
 		switch (itemType) {
 		case "DEFAULT":
 			this.itemType = itDefault;
-			return;
+			break;
 		case "FOOD":
 			this.itemType = itFood;
-			return;
+			break;
 		case "DRINK":
 			this.itemType = itDrink;
-			return;
+			break;
 		}
 	}
 

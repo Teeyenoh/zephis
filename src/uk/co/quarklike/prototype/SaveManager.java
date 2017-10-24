@@ -16,6 +16,9 @@ import uk.co.quarklike.prototype.map.item.ItemStack;
 public class SaveManager {
 	public static void saveFile(Map map, EntityLiving player, String fileName) {
 		try {
+			File dir = new File("save/");
+			dir.mkdirs();
+
 			File f = new File("save/" + fileName);
 			if (!f.exists()) {
 				f.createNewFile();
@@ -60,7 +63,7 @@ public class SaveManager {
 		try {
 			File f = new File("save/" + fileName);
 			if (!f.exists()) {
-				newGame(player);
+				newGame(map, player);
 				return;
 			}
 
@@ -167,8 +170,9 @@ public class SaveManager {
 		return String.valueOf(out);
 	}
 
-	private static void newGame(EntityLiving player) {
+	private static void newGame(Map map, EntityLiving player) {
 		player.loadPlayer("Player", 15, 15, (byte) 0, (byte) 0, Map.NORTH, false);
+		player.register(map);
 		player.addItem(new ItemStack(1, (byte) 5));
 		player.addItem(new ItemStack(2, (byte) 5));
 	}

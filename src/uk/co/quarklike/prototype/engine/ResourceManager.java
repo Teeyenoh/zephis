@@ -81,7 +81,8 @@ public class ResourceManager implements Manager {
 	}
 
 	private void addToQueue(String name) {
-		queue.add(name);
+		if (!queue.contains(name))
+			queue.add(name);
 	}
 
 	public void requestTexture(int id) {
