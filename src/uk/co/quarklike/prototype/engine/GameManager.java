@@ -60,73 +60,75 @@ public class GameManager implements Manager {
 			contentHub.setNewState(null);
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_1))
-			layer = 0;
+		if (Main.DEBUG) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_1))
+				layer = 0;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_2))
-			layer = 1;
+			if (Keyboard.isKeyDown(Keyboard.KEY_2))
+				layer = 1;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_3))
-			layer = 2;
+			if (Keyboard.isKeyDown(Keyboard.KEY_3))
+				layer = 2;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_4))
-			layer = 3;
+			if (Keyboard.isKeyDown(Keyboard.KEY_4))
+				layer = 3;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_5))
-			layer = 4;
+			if (Keyboard.isKeyDown(Keyboard.KEY_5))
+				layer = 4;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_6))
-			layer = 5;
+			if (Keyboard.isKeyDown(Keyboard.KEY_6))
+				layer = 5;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_7))
-			layer = 6;
+			if (Keyboard.isKeyDown(Keyboard.KEY_7))
+				layer = 6;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_8))
-			layer = 7;
+			if (Keyboard.isKeyDown(Keyboard.KEY_8))
+				layer = 7;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_9))
-			layer = 8;
+			if (Keyboard.isKeyDown(Keyboard.KEY_9))
+				layer = 8;
 
-		int mouseX = Mouse.getX() - (contentHub.getWindowWidth() / 2);
-		int mouseY = Mouse.getY() - (contentHub.getWindowHeight() / 2);
-		mouseX += (mouseX < 0 ? -16 : 16);
-		mouseY += (mouseY < 0 ? -16 : 16);
-		int mouseWheel = Mouse.getDWheel();
-		int tileX = ((mouseX + player.getSubX()) / 32) + player.getX();
-		int tileY = -(((mouseY + player.getSubY()) / 32) - player.getY());
+			int mouseX = Mouse.getX() - (contentHub.getWindowWidth() / 2);
+			int mouseY = Mouse.getY() - (contentHub.getWindowHeight() / 2);
+			mouseX += (mouseX < 0 ? -16 : 16);
+			mouseY += (mouseY < 0 ? -16 : 16);
+			int mouseWheel = Mouse.getDWheel();
+			int tileX = ((mouseX + player.getSubX()) / 32) + player.getX();
+			int tileY = -(((mouseY + player.getSubY()) / 32) - player.getY());
 
-		while (Mouse.next()) {
-			if (Mouse.getEventButtonState()) {
-				if (Mouse.getEventButton() == 0) {
-					switch (mode) {
-					case TILE:
-						currentMap.setTile(tileX, tileY, layer, contentHub.slot + 1);
-						currentMap.setTexture(tileX, tileY, layer, contentHub.texture);
-						break;
-					case COLLISION:
-						currentMap.setCollision(tileX, tileY, collision, !currentMap.getCollision(tileX, tileY, collision));
-						break;
+			while (Mouse.next()) {
+				if (Mouse.getEventButtonState()) {
+					if (Mouse.getEventButton() == 0) {
+						switch (mode) {
+						case TILE:
+							currentMap.setTile(tileX, tileY, layer, contentHub.slot + 1);
+							currentMap.setTexture(tileX, tileY, layer, contentHub.texture);
+							break;
+						case COLLISION:
+							currentMap.setCollision(tileX, tileY, collision, !currentMap.getCollision(tileX, tileY, collision));
+							break;
+						}
+					} else if (Mouse.getEventButton() == 1) {
+						switch (mode) {
+						case TILE:
+							currentMap.setTile(tileX, tileY, layer, 0);
+							currentMap.setTexture(tileX, tileY, layer, 0);
+							break;
+						}
+					} else if (Mouse.getEventButton() == 2) {
+						mode = (byte) Util.wrap(mode + 1, 0, 1);
 					}
-				} else if (Mouse.getEventButton() == 1) {
-					switch (mode) {
-					case TILE:
-						currentMap.setTile(tileX, tileY, layer, 0);
-						currentMap.setTexture(tileX, tileY, layer, 0);
-						break;
-					}
-				} else if (Mouse.getEventButton() == 2) {
-					mode = (byte) Util.wrap(mode + 1, 0, 1);
 				}
 			}
-		}
 
-		Display.setTitle(Main.TITLE + " Mode: " + mode + " Tile: " + tile + " Texture: " + texture + " Layer: " + layer);
+			Display.setTitle(Main.TITLE + " Mode: " + mode + " Tile: " + tile + " Texture: " + texture + " Layer: " + layer);
 
-		if (mode == COLLISION) {
-			if (mouseWheel < 0)
-				collision = (byte) Util.wrap(collision - 1, 0, 3);
-			if (mouseWheel > 0)
-				collision = (byte) Util.wrap(collision + 1, 0, 3);
+			if (mode == COLLISION) {
+				if (mouseWheel < 0)
+					collision = (byte) Util.wrap(collision - 1, 0, 3);
+				if (mouseWheel > 0)
+					collision = (byte) Util.wrap(collision + 1, 0, 3);
+			}
 		}
 	}
 
