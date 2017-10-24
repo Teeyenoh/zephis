@@ -6,7 +6,7 @@ import uk.co.quarklike.prototype.engine.*;
 
 public class Main implements Runnable {
 	public static final boolean DEBUG = Boolean.valueOf(System.getenv("DEBUG"));
-	public static final String TITLE = "Zephis v0.5.2-alpha";
+	public static final String TITLE = "Zephis v0.5.3-alpha";
 	public static final String TEST_MESSAGE = "Welcome to " + TITLE + "!\nPlease run around and test the game, but bare in mind that a lot of the walls' hitboxes don't exist (particularly the vertical ones).\nOpen your inventory by pressing 'I' and drop items by pressing 'D'.\nPressing 'T' in the game world will throw a copper bar!\nThe game world state, including player position and whether you're moving or not, should be saved when the game is closed.\nPlease test this in all possible ways, such as quitting while inbetween tiles, and ensuring that items which are dropped remain dropped.\n\nThanks! Dylan";
 
 	public static Main instance;
@@ -72,7 +72,7 @@ public class Main implements Runnable {
 		currentManager = m_game;
 		m_game.postInit();
 		currentManager = null;
-		
+
 		Log.info(TEST_MESSAGE);
 	}
 

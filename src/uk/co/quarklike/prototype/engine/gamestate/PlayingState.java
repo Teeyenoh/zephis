@@ -2,6 +2,7 @@ package uk.co.quarklike.prototype.engine.gamestate;
 
 import org.lwjgl.input.Keyboard;
 
+import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.engine.ContentHub;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
@@ -61,6 +62,16 @@ public class PlayingState implements GameState {
 
 				if (Keyboard.getEventKey() == Keyboard.KEY_I) {
 					contentHub.setNewState(new MenuState(map, player));
+				}
+				
+				if (Keyboard.getEventKey() == Keyboard.KEY_W) {
+					contentHub.texture = Util.clamp(contentHub.texture + 1, 0, 256);
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_A) {
+					contentHub.slot = Util.clamp(contentHub.slot - 1, 0, 256);
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_S) {
+					contentHub.texture = Util.clamp(contentHub.texture - 1, 0, 256);
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_D) {
+					contentHub.slot = Util.clamp(contentHub.slot + 1, 0, 256);
 				}
 			}
 		}

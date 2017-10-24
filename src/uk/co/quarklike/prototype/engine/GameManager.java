@@ -120,20 +120,6 @@ public class GameManager implements Manager {
 			}
 		}
 
-		while (Keyboard.next()) {
-			if (Keyboard.getEventKeyState()) {
-				if (Keyboard.getEventKey() == Keyboard.KEY_W) {
-					contentHub.texture = Util.clamp(contentHub.texture + 1, 0, 256);
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_A) {
-					contentHub.slot = Util.clamp(contentHub.slot - 1, 0, 256);
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_S) {
-					contentHub.texture = Util.clamp(contentHub.texture - 1, 0, 256);
-				} else if (Keyboard.getEventKey() == Keyboard.KEY_D) {
-					contentHub.slot = Util.clamp(contentHub.slot + 1, 0, 256);
-				}
-			}
-		}
-
 		Display.setTitle(Main.TITLE + " Mode: " + mode + " Tile: " + tile + " Texture: " + texture + " Layer: " + layer);
 
 		if (mode == COLLISION) {
