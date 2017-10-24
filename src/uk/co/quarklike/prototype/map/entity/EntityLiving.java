@@ -1,5 +1,6 @@
 package uk.co.quarklike.prototype.map.entity;
 
+import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.item.Inventory;
 import uk.co.quarklike.prototype.map.item.ItemStack;
@@ -13,6 +14,9 @@ public class EntityLiving extends Entity {
 	protected byte queued = -1;
 
 	protected Inventory inventory;
+
+	protected int maxHealth = 100;
+	protected int currentHealth = 100;
 
 	public EntityLiving(String name, String texture) {
 		super(name, texture);
@@ -110,6 +114,10 @@ public class EntityLiving extends Entity {
 				proj.register(map);
 			}
 		}
+	}
+
+	public void addHealth(int toAdd) {
+		currentHealth = Util.clamp(currentHealth + toAdd, 0, maxHealth);
 	}
 
 	public void throwItem(int item) {

@@ -7,6 +7,7 @@ import uk.co.quarklike.prototype.engine.ContentHub;
 import uk.co.quarklike.prototype.engine.gui.windows.GUIInventory;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
+import uk.co.quarklike.prototype.map.item.Item;
 
 public class MenuState implements GameState {
 	private ContentHub contentHub;
@@ -30,7 +31,7 @@ public class MenuState implements GameState {
 		contentHub.setDrawMap(false);
 		inventory = new GUIInventory(contentHub, player);
 	}
-	
+
 	private void closeMenu() {
 		contentHub.setNewState(new PlayingState(map, player));
 	}
@@ -52,11 +53,11 @@ public class MenuState implements GameState {
 				if (Keyboard.getEventKey() == Keyboard.KEY_T) {
 					player.throwItem(item);
 					closeMenu();
-					
+
 				}
 
 				if (Keyboard.getEventKey() == Keyboard.KEY_Z) {
-					
+					Item.getItem(player.getInventory().getItems().get(item).getItemID()).getItemType().use(map, player);
 				}
 			}
 		}
@@ -66,12 +67,22 @@ public class MenuState implements GameState {
 			menuDelay = 16;
 		}
 
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && menuDelay == 0) {
+			item = Util.wrap(item - 3, 0, player.getInventory().getItems().size() - 1);
+			menuDelay = 16;
+		}
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && menuDelay == 0) {
 			item = Util.wrap(item + 1, 0, player.getInventory().getItems().size() - 1);
 			menuDelay = 16;
 		}
 
-		if (!Keyboard.isKeyDown(Keyboard.KEY_UP) && !Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && menuDelay == 0) {
+			item = Util.wrap(item + 3, 0, player.getInventory().getItems().size() - 1);
+			menuDelay = 16;
+		}
+
+		if (!Keyboard.isKeyDown(Keyboard.KEY_UP) && !Keyboard.isKeyDown(Keyboard.KEY_LEFT) && !Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 			menuDelay = 0;
 		}
 

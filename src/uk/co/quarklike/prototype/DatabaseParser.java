@@ -10,6 +10,9 @@ import com.healthmarketscience.jackcess.Table;
 
 import uk.co.quarklike.prototype.map.item.Item;
 import uk.co.quarklike.prototype.map.item.Material;
+import uk.co.quarklike.prototype.map.item.type.ItemType;
+import uk.co.quarklike.prototype.map.item.type.ItemTypeDrink;
+import uk.co.quarklike.prototype.map.item.type.ItemTypeFood;
 
 public class DatabaseParser {
 	public static void parseDatabse(String fileName) {
@@ -18,7 +21,22 @@ public class DatabaseParser {
 
 			Table items = database.getTable("items");
 			for (Row r : items) {
-				new Item(r.getInt("itemID"), r.getString("itemName"), r.getString("itemType"), "items/" + r.getString("itemTexture"), Short.parseShort(Integer.toString(r.getInt("textureSlot"))));
+				String itemTypeS = r.getString("itemType");
+				ItemType itemType = null;
+
+				switch (itemTypeS) {
+				case "DEFAULT":
+					itemType = new ItemType();
+					break;
+				case "FOOD":
+					itemType = new ItemTypeFood(r.getInt("health"), r.getInt("stamina"), r.getInt("warmth"));
+					break;
+				case "DRINK":
+					itemType = new ItemTypeDrink(r.getInt("mana"), r.getInt("stamina"), r.getInt("warmth"));
+					break;
+				}
+
+				new Item(r.getInt("itemID"), r.getString("itemName"), itemType, "items/" + r.getString("itemTexture"), Short.parseShort(Integer.toString(r.getInt("textureSlot"))));
 			}
 
 			Table materials = database.getTable("materials");

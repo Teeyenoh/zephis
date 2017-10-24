@@ -3,6 +3,8 @@ package uk.co.quarklike.prototype.map.item;
 import java.util.HashMap;
 
 import uk.co.quarklike.prototype.Log;
+import uk.co.quarklike.prototype.map.item.type.ItemType;
+import uk.co.quarklike.prototype.map.item.type.ItemTypeFood;
 
 public class Item {
 	private static final Item[] items = new Item[256];
@@ -14,13 +16,10 @@ public class Item {
 	private String itemTexture;
 	private short textureSlot;
 
-	public static final ItemType itDefault = new ItemType();
-	public static final ItemType itFood = new ItemTypeConsumable("GUI_WINDOW_INVENTORY_COMMAND_EAT");
-	public static final ItemType itDrink = new ItemTypeConsumable("GUI_WINDOW_INVENTORY_COMMAND_DRINK");
-
-	public Item(int id, String name, String itemType, String texture, short slot) {
+	public Item(int id, String name, ItemType itemType, String texture, short slot) {
 		this.itemID = id;
 		this.itemName = name;
+		this.itemType = itemType;
 		this.itemTexture = texture;
 		this.textureSlot = slot;
 		if (items[id - 1] != null)
@@ -28,18 +27,6 @@ public class Item {
 		else {
 			items[id - 1] = this;
 			itemMap.put(name, id);
-		}
-
-		switch (itemType) {
-		case "DEFAULT":
-			this.itemType = itDefault;
-			break;
-		case "FOOD":
-			this.itemType = itFood;
-			break;
-		case "DRINK":
-			this.itemType = itDrink;
-			break;
 		}
 	}
 
