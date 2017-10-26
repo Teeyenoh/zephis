@@ -6,6 +6,7 @@ import uk.co.quarklike.prototype.map.entity.EntityLiving;
 public class ItemType {
 	protected String useText;
 	protected boolean useable;
+	protected boolean isUsed;
 
 	public ItemType() {
 		this.useText = "GUI_WINDOW_INVENTORY_COMMAND_USE";
@@ -22,5 +23,9 @@ public class ItemType {
 
 	public boolean isUseable() {
 		return useable;
+	}
+	
+	public boolean isUsed() {
+		return isUsed;
 	}
 }

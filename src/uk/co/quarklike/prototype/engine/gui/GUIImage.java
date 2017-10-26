@@ -18,8 +18,12 @@ public class GUIImage extends GUIComponent {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	public void setTexture(String t) {
 		this.texture = t;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
 }

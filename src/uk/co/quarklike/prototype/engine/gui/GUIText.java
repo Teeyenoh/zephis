@@ -65,4 +65,8 @@ public class GUIText extends GUIComponent {
 
 		renderEngine.drawText(x, y, font, text, color);
 	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
 }

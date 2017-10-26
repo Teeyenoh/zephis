@@ -18,4 +18,8 @@ public abstract class GUIWindow {
 	protected void addComponent(GUIComponent c) {
 		comps.add(c);
 	}
+
+	public abstract void init();
+
+	public abstract void refresh();
 }

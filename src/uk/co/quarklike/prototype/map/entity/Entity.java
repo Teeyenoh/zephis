@@ -1,5 +1,6 @@
 package uk.co.quarklike.prototype.map.entity;
 
+import uk.co.quarklike.prototype.SaveManager;
 import uk.co.quarklike.prototype.map.Map;
 
 public class Entity {
@@ -19,9 +20,22 @@ public class Entity {
 		this.texture = texture;
 	}
 
+	public void loadEntity(String name, int x, int y, byte subX, byte subY) {
+		this.entityName = name;
+		this.x = x;
+		this.y = y;
+		this.subX = subX;
+		this.subY = subY;
+	}
+
 	public void register(Map map) {
 		this.map = map;
 		this.entityID = map.addEntity(this);
+	}
+	
+	public void register(Map map, long id) {
+		this.map = map;
+		this.entityID = map.addEntity(this, id);
 	}
 
 	public void update() {
@@ -69,5 +83,9 @@ public class Entity {
 
 	public int getMapID() {
 		return map.getMapID();
+	}
+	
+	public byte getType() {
+		return SaveManager.DEFAULT;
 	}
 }

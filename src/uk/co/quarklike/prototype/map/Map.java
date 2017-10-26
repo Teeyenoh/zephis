@@ -134,6 +134,11 @@ public class Map {
 		return id;
 	}
 
+	public long addEntity(Entity e, long id) {
+		entities.put(id, e);
+		return id;
+	}
+
 	public void removeEntity(long e) {
 		toRemove.add(e);
 	}

@@ -4,16 +4,17 @@ import org.lwjgl.input.Keyboard;
 
 import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.engine.ContentHub;
+import uk.co.quarklike.prototype.engine.gui.windows.GUIStats;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
-import uk.co.quarklike.prototype.map.item.Item;
-import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class PlayingState implements GameState {
 	private ContentHub contentHub;
 	private Map map;
 	private EntityLiving player;
+	
+	private GUIStats stats;
 
 	public PlayingState(Map map, EntityLiving player) {
 		this.map = map;
@@ -27,10 +28,14 @@ public class PlayingState implements GameState {
 		contentHub.setDrawMap(true);
 		contentHub.setMapToDraw(map);
 		contentHub.setCamera(player);
+		
+		stats = new GUIStats(contentHub, player);
 	}
 
 	@Override
 	public void update() {
+		contentHub.addGUI(stats);
+		
 		map.requestTextures(contentHub.getResources());
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
@@ -52,18 +57,10 @@ public class PlayingState implements GameState {
 
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
-				if (Keyboard.getEventKey() == Keyboard.KEY_T) {
-					player.throwItem(new ItemStack(Item.getItem("Copper Ingot").getID(), (byte) 1));
-				}
-
-				if (Keyboard.getEventKey() == Keyboard.KEY_P) {
-					player.pickUpItem();
-				}
-
 				if (Keyboard.getEventKey() == Keyboard.KEY_I) {
 					contentHub.setNewState(new MenuState(map, player));
 				}
-				
+
 				if (Keyboard.getEventKey() == Keyboard.KEY_W) {
 					contentHub.texture = Util.clamp(contentHub.texture + 1, 0, 256);
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_A) {

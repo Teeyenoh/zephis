@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.map.item.type.ItemType;
-import uk.co.quarklike.prototype.map.item.type.ItemTypeFood;
 
 public class Item {
 	private static final Item[] items = new Item[256];

@@ -28,6 +28,18 @@ public class Inventory {
 		items = new ArrayList<ItemStack>();
 	}
 
+	public void update() {
+		ArrayList<ItemStack> toRemove = new ArrayList<ItemStack>();
+
+		for (ItemStack i : items) {
+			if (i.getQuantity() <= 0) {
+				toRemove.add(i);
+			}
+		}
+
+		items.removeAll(toRemove);
+	}
+
 	public boolean addItem(int itemID, byte quantity) {
 		ItemStack i = null;
 		if ((i = containsItem(itemID)) == null) {
@@ -55,6 +67,10 @@ public class Inventory {
 		}
 
 		return false;
+	}
+
+	public boolean removeItem(int slot) {
+		return removeItem(items.get(slot).getItemID(), 1);
 	}
 
 	private ItemStack containsItem(int itemID) {

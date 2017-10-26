@@ -5,9 +5,11 @@ import org.lwjgl.input.Keyboard;
 import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.engine.ContentHub;
 import uk.co.quarklike.prototype.engine.gui.windows.GUIInventory;
+import uk.co.quarklike.prototype.engine.gui.windows.GUIStats;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
 import uk.co.quarklike.prototype.map.item.Item;
+import uk.co.quarklike.prototype.map.item.type.ItemType;
 
 public class MenuState implements GameState {
 	private ContentHub contentHub;
@@ -18,6 +20,7 @@ public class MenuState implements GameState {
 	private int item;
 
 	private GUIInventory inventory;
+	private GUIStats stats;
 
 	public MenuState(Map map, EntityLiving player) {
 		this.map = map;
@@ -30,6 +33,7 @@ public class MenuState implements GameState {
 
 		contentHub.setDrawMap(false);
 		inventory = new GUIInventory(contentHub, player);
+		stats = new GUIStats(contentHub, player);
 	}
 
 	private void closeMenu() {
@@ -39,6 +43,7 @@ public class MenuState implements GameState {
 	@Override
 	public void update() {
 		contentHub.addGUI(inventory);
+		contentHub.addGUI(stats);
 
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
@@ -53,11 +58,13 @@ public class MenuState implements GameState {
 				if (Keyboard.getEventKey() == Keyboard.KEY_T) {
 					player.throwItem(item);
 					closeMenu();
-
 				}
 
 				if (Keyboard.getEventKey() == Keyboard.KEY_Z) {
-					Item.getItem(player.getInventory().getItems().get(item).getItemID()).getItemType().use(map, player);
+					ItemType i = Item.getItem(player.getInventory().getItems().get(item).getItemID()).getItemType();
+					i.use(map, player);
+					if (i.isUsed())
+						player.getInventory().removeItem(item);
 				}
 			}
 		}
@@ -88,9 +95,9 @@ public class MenuState implements GameState {
 
 		menuDelay = Util.clamp(menuDelay - 1, 0, 16);
 
-		inventory.setItem(item);
-
+		player.getInventory().update();
 		inventory.refresh();
+		inventory.setItem(item);
 	}
 
 	@Override

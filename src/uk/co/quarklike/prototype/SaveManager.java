@@ -6,10 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.lwjgl.util.vector.Vector4f;
 
 import uk.co.quarklike.prototype.map.Map;
+import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
 import uk.co.quarklike.prototype.map.item.ItemStack;
 
@@ -26,21 +28,12 @@ public class SaveManager {
 
 			FileOutputStream out = new FileOutputStream(f);
 
-			writeString(out, player.getName(), 32);
+			Collection<Entity> entities = map.getEntities();
 
-			writeInt(out, player.getMapID());
-			writeInt(out, player.getX());
-			writeInt(out, player.getY());
-			writeByte(out, player.getSubX());
-			writeByte(out, player.getSubY());
-			writeByte(out, player.getDirection());
-			writeBool(out, player.isMoving());
+			writeShort(out, (short) entities.size());
 
-			writeShort(out, (short) player.getInventory().getItems().size());
-
-			for (ItemStack i : player.getInventory().getItems()) {
-				writeInt(out, i.getItemID());
-				writeByte(out, i.getQuantity());
+			for (Entity e : entities) {
+				writeEntity(out, map, player, e);
 			}
 
 			ArrayList<Vector4f> items = map.getItems();
@@ -59,6 +52,11 @@ public class SaveManager {
 		}
 	}
 
+	public static final byte DEFAULT = 0;
+	public static final byte LIVING = 1;
+	public static final byte PROJECTILE = 2;
+	public static final byte ITEM = 3;
+
 	public static void readFile(Map map, EntityLiving player, String fileName) {
 		try {
 			File f = new File("save/" + fileName);
@@ -76,24 +74,10 @@ public class SaveManager {
 			buffer.put(data);
 			buffer.flip();
 
-			String playerName = readString(buffer, 32);
-			int mapID = buffer.getInt();
-			int playerX = buffer.getInt();
-			int playerY = buffer.getInt();
-			byte playerSubX = buffer.get();
-			byte playerSubY = buffer.get();
-			byte direction = buffer.get();
-			boolean moving = buffer.get() == 1;
+			short entities = buffer.getShort();
 
-			player.loadPlayer(playerName, playerX, playerY, playerSubX, playerSubY, direction, moving);
-			player.register(map);
-
-			short invItems = buffer.getShort();
-
-			for (int i = 0; i < invItems; i++) {
-				int itemID = buffer.getInt();
-				byte quantity = buffer.get();
-				player.addItem(new ItemStack(itemID, quantity));
+			for (int entity = 0; entity < entities; entity++) {
+				readEntity(buffer, player, map);
 			}
 
 			short mapItems = buffer.getShort();
@@ -171,9 +155,102 @@ public class SaveManager {
 	}
 
 	private static void newGame(Map map, EntityLiving player) {
-		player.loadPlayer("Player", 15, 15, (byte) 0, (byte) 0, Map.NORTH, false);
+		player.loadEntity("Player", 15, 15, (byte) 0, (byte) 0, Map.NORTH, false, (short) 100, (short) 100, (short) 100, (short) 100, (short) 100, (short) 100, (byte) 100, (byte) 100, (byte) 100);
 		player.register(map);
 		player.addItem(new ItemStack(1, (byte) 5));
 		player.addItem(new ItemStack(2, (byte) 5));
+	}
+
+	private static void writeEntity(FileOutputStream out, Map map, EntityLiving player, Entity e) throws IOException {
+		byte type = e.getType();
+
+		writeByte(out, e.equals(player) ? (byte) 1 : (byte) 0);
+		writeString(out, e.getName(), 32);
+		writeByte(out, type);
+		writeInt(out, e.getMapID());
+		writeLong(out, e.getEntityID());
+		writeInt(out, e.getX());
+		writeInt(out, e.getY());
+		writeByte(out, e.getSubX());
+		writeByte(out, e.getSubY());
+
+		switch (type) {
+		case DEFAULT:
+			break;
+		case LIVING:
+			EntityLiving e_living = (EntityLiving) e;
+			writeByte(out, e_living.getDirection());
+			writeBool(out, e_living.isMoving());
+			writeShort(out, e_living.getStats().getHardMaxHealth());
+			writeShort(out, e_living.getStats().getHealth());
+			writeShort(out, e_living.getStats().getHardMaxMana());
+			writeShort(out, e_living.getStats().getMana());
+			writeShort(out, e_living.getStats().getHardMaxStamina());
+			writeShort(out, e_living.getStats().getStamina());
+			writeByte(out, e_living.getStats().getHunger());
+			writeByte(out, e_living.getStats().getTiredness());
+			writeByte(out, e_living.getStats().getWarmth());
+
+			writeShort(out, (short) e_living.getInventory().getItems().size());
+
+			for (ItemStack i : e_living.getInventory().getItems()) {
+				writeInt(out, i.getItemID());
+				writeByte(out, i.getQuantity());
+			}
+
+			break;
+		}
+	}
+
+	private static void readEntity(ByteBuffer buffer, EntityLiving player, Map map) throws IOException {
+		Entity e = null;
+
+		boolean isPlayer = buffer.get() == 1;
+		String name = readString(buffer, 32);
+		byte type = buffer.get();
+		int mapID = buffer.getInt();
+		long entityID = buffer.getLong();
+		int x = buffer.getInt();
+		int y = buffer.getInt();
+		byte subX = buffer.get();
+		byte subY = buffer.get();
+
+		switch (type) {
+		case DEFAULT:
+			e = new Entity("UNKNOWN", "blank.png");
+			e.loadEntity(name, x, y, subX, subY);
+			break;
+		case LIVING:
+			byte direction = buffer.get();
+			boolean moving = buffer.get() == 1;
+			short maxHealth = buffer.getShort();
+			short health = buffer.getShort();
+			short maxMana = buffer.getShort();
+			short mana = buffer.getShort();
+			short maxStamina = buffer.getShort();
+			short stamina = buffer.getShort();
+			byte hunger = buffer.get();
+			byte tiredness = buffer.get();
+			byte warmth = buffer.get();
+
+			e = isPlayer ? player : new EntityLiving("UNKNOWN", "tiles/grass.png");
+			((EntityLiving) e).loadEntity(name, x, y, subX, subY, direction, moving, maxHealth, health, maxMana, mana, maxStamina, stamina, hunger, tiredness, warmth);
+
+			short invItems = buffer.getShort();
+
+			for (int i = 0; i < invItems; i++) {
+				int itemID = buffer.getInt();
+				byte quantity = buffer.get();
+				((EntityLiving) e).addItem(new ItemStack(itemID, quantity));
+			}
+
+			break;
+		case PROJECTILE:
+			break;
+		case ITEM:
+			break;
+		}
+
+		e.register(map, entityID);
 	}
 }

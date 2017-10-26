@@ -115,6 +115,7 @@ public class GraphicsManager implements Manager {
 		glLoadIdentity();
 
 		for (GUIWindow panel : contentHub.getGUI()) {
+			panel.refresh();
 			panel.draw(renderEngine);
 		}
 

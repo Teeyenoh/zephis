@@ -29,10 +29,10 @@ public class DatabaseParser {
 					itemType = new ItemType();
 					break;
 				case "FOOD":
-					itemType = new ItemTypeFood(r.getInt("health"), r.getInt("stamina"), r.getInt("warmth"));
+					itemType = new ItemTypeFood(r.getShort("health"), r.getShort("stamina"), r.getByte("hunger"), r.getByte("warmth"));
 					break;
 				case "DRINK":
-					itemType = new ItemTypeDrink(r.getInt("mana"), r.getInt("stamina"), r.getInt("warmth"));
+					itemType = new ItemTypeDrink(r.getShort("mana"), r.getShort("stamina"), r.getByte("hunger"), r.getByte("warmth"));
 					break;
 				}
 

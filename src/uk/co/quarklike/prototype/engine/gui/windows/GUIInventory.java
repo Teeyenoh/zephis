@@ -27,12 +27,12 @@ public class GUIInventory extends GUIWindow {
 		this.width = 512;
 		this.height = 512;
 		this.player = player;
-		refresh();
+
+		init();
 	}
 
-	public void refresh() {
-		comps.clear();
-
+	@Override
+	public void init() {
 		int nearX = x - (width / 2) + 48;
 		int nearY = y - (height / 2) + 32;
 		int farX = x + (width / 2) - 48;
@@ -67,10 +67,10 @@ public class GUIInventory extends GUIWindow {
 		setItem(item);
 	}
 
-	public void setItem(int item) {
-		this.item = item;
-
+	@Override
+	public void refresh() {
 		int startItem = Util.clamp(item - 3, 0, item);
+		int endItem = Util.clamp(startItem + 7, item, player.getInventory().getItems().size());
 
 		selection.setY((y - (height / 2) + 96) + ((item - startItem) * 48));
 
@@ -83,5 +83,11 @@ public class GUIInventory extends GUIWindow {
 			downArrow.setTexture("gui/arrow_down_off.png");
 		else
 			downArrow.setTexture("gui/arrow_down_on.png");
+
+		number.setText((item + 1) + " / " + player.getInventory().getItems().size());
+	}
+
+	public void setItem(int item) {
+		this.item = item;
 	}
 }

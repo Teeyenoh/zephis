@@ -1,6 +1,6 @@
 package uk.co.quarklike.prototype.map.entity;
 
-import uk.co.quarklike.prototype.Util;
+import uk.co.quarklike.prototype.SaveManager;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.item.Inventory;
 import uk.co.quarklike.prototype.map.item.ItemStack;
@@ -13,29 +13,34 @@ public class EntityLiving extends Entity {
 	protected byte direction;
 	protected byte queued = -1;
 
+	protected Stats stats;
 	protected Inventory inventory;
-
-	protected int maxHealth = 100;
-	protected int currentHealth = 100;
 
 	public EntityLiving(String name, String texture) {
 		super(name, texture);
-		inventory = new Inventory(10);
+		this.stats = new Stats(this, (short) 100, (short) 100, (short) 100, (short) 100, (short) 100, (short) 100, (byte) 100, (byte) 100, (byte) 100);
+		this.inventory = new Inventory(10);
 	}
 
-	public void loadPlayer(String name, int x, int y, byte subX, byte subY, byte direction, boolean moving) {
-		this.entityName = name;
-		this.x = x;
-		this.y = y;
-		this.subX = subX;
-		this.subY = subY;
+	public void loadEntity(String name, int x, int y, byte subX, byte subY, byte direction, boolean moving, short maxHealth, short health, short maxMana, short mana, short maxStamina, short stamina, byte hunger, byte tiredness, byte warmth) {
+		super.loadEntity(name, x, y, subX, subY);
 		this.direction = direction;
 		this.moving = moving;
+		this.stats = new Stats(this, maxHealth, health, maxMana, mana, maxStamina, stamina, hunger, tiredness, warmth);
+	}
+
+	@Deprecated
+	@Override
+	public void loadEntity(String name, int x, int y, byte subX, byte subY) {
+
 	}
 
 	@Override
 	public void update() {
 		handleMovement();
+
+		stats.update();
+
 		if (!moving) {
 			speed = nextSpeed;
 			if (queued != -1) {
@@ -43,6 +48,8 @@ public class EntityLiving extends Entity {
 				queued = -1;
 			}
 		}
+		
+		inventory.update();
 	}
 
 	private void handleMovement() {
@@ -116,10 +123,6 @@ public class EntityLiving extends Entity {
 		}
 	}
 
-	public void addHealth(int toAdd) {
-		currentHealth = Util.clamp(currentHealth + toAdd, 0, maxHealth);
-	}
-
 	public void throwItem(int item) {
 		throwItem(inventory.getItems().get(item));
 	}
@@ -138,5 +141,14 @@ public class EntityLiving extends Entity {
 
 	public byte getDirection() {
 		return direction;
+	}
+
+	public Stats getStats() {
+		return this.stats;
+	}
+
+	@Override
+	public byte getType() {
+		return SaveManager.LIVING;
 	}
 }
