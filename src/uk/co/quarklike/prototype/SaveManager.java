@@ -36,7 +36,7 @@ public class SaveManager {
 				writeEntity(out, map, player, e);
 			}
 
-			ArrayList<Vector4f> items = map.getItems();
+			ArrayList<Vector4f> items = map.getItemsAsVectors();
 			writeShort(out, (short) items.size());
 
 			for (Vector4f item : items) {

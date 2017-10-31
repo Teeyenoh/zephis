@@ -203,7 +203,7 @@ public class Map {
 		return data.getMapID();
 	}
 
-	public ArrayList<Vector4f> getItems() {
+	public ArrayList<Vector4f> getItemsAsVectors() {
 		ArrayList<Vector4f> out = new ArrayList<Vector4f>();
 
 		for (int i = 0; i < getWidth(); i++) {

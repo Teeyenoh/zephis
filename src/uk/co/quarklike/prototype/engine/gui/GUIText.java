@@ -69,4 +69,8 @@ public class GUIText extends GUIComponent {
 	public void setText(String text) {
 		this.text = text;
 	}
+
+	public void setColour(Color color) {
+		this.color = color;
+	}
 }

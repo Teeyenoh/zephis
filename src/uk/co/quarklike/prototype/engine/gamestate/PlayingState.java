@@ -13,7 +13,7 @@ public class PlayingState implements GameState {
 	private ContentHub contentHub;
 	private Map map;
 	private EntityLiving player;
-	
+
 	private GUIStats stats;
 
 	public PlayingState(Map map, EntityLiving player) {
@@ -28,14 +28,14 @@ public class PlayingState implements GameState {
 		contentHub.setDrawMap(true);
 		contentHub.setMapToDraw(map);
 		contentHub.setCamera(player);
-		
+
 		stats = new GUIStats(contentHub, player);
 	}
 
 	@Override
 	public void update() {
 		contentHub.addGUI(stats);
-		
+
 		map.requestTextures(contentHub.getResources());
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
@@ -58,7 +58,9 @@ public class PlayingState implements GameState {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
 				if (Keyboard.getEventKey() == Keyboard.KEY_I) {
-					contentHub.setNewState(new MenuState(map, player));
+					contentHub.setNewState(new InventoryState(map, player));
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_G) {
+					contentHub.setNewState(new InventoryState(map, player, map.getItem(player.getX(), player.getY()), "GUI_WINDOW_CONTAINER_TITLE_GROUND"));
 				}
 
 				if (Keyboard.getEventKey() == Keyboard.KEY_W) {
