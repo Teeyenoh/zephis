@@ -1,13 +1,15 @@
 package uk.co.quarklike.prototype.map.entity;
 
+import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.SaveManager;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.item.Inventory;
 import uk.co.quarklike.prototype.map.item.ItemStack;
 
 public class EntityLiving extends Entity {
+	protected final int baseSpeed = 2;
 	protected int speed = 2;
-	protected int nextSpeed;
+	protected boolean sprinting;
 
 	protected boolean moving;
 	protected byte direction;
@@ -41,14 +43,18 @@ public class EntityLiving extends Entity {
 
 		stats.update();
 
+		if (stats.getStamina() <= 0) {
+			stats.addStamina((byte) -stats.getStamina());
+			stopSprinting();
+		}
+
 		if (!moving) {
-			speed = nextSpeed;
 			if (queued != -1) {
 				move(queued);
 				queued = -1;
 			}
 		}
-		
+
 		inventory.update();
 	}
 
@@ -77,15 +83,24 @@ public class EntityLiving extends Entity {
 	}
 
 	public void move(byte direction) {
-		if (moving)
+		if (moving) {
 			if (direction != this.direction) {
 				queued = direction;
-				return;
 			}
+			return;
+		}
 
 		this.direction = direction;
-		if (!map.isBlocked(x, y, direction))
+		if (!map.isBlocked(x, y, direction)) {
 			moving = true;
+
+			if (sprinting) {
+				stats.addStamina((byte) -2);
+				speed = baseSpeed * 2;
+				Log.info("Check!");
+			} else
+				speed = baseSpeed;
+		}
 	}
 
 	public boolean addItem(ItemStack i) {
@@ -131,8 +146,12 @@ public class EntityLiving extends Entity {
 		return inventory;
 	}
 
-	public void setSpeed(int speed) {
-		this.nextSpeed = speed;
+	public void startSprinting() {
+		sprinting = true;
+	}
+
+	public void stopSprinting() {
+		sprinting = false;
 	}
 
 	public boolean isMoving() {

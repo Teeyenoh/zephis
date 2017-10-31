@@ -2,7 +2,6 @@ package uk.co.quarklike.prototype.map.entity;
 
 import org.lwjgl.Sys;
 
-import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Util;
 
 public class Stats {
@@ -33,6 +32,8 @@ public class Stats {
 			addHealth(healthRegen);
 			addMana(manaRegen);
 			addStamina(staminaRegen);
+			addHunger((byte) -1);
+			addTiredness((byte) -1);
 			lastTime = Sys.getTime();
 		}
 

@@ -51,9 +51,9 @@ public class PlayingState implements GameState {
 			player.move(Map.WEST);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-			player.setSpeed(4);
+			player.startSprinting();
 		else
-			player.setSpeed(2);
+			player.stopSprinting();
 
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
