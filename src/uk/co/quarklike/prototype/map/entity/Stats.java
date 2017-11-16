@@ -2,29 +2,61 @@ package uk.co.quarklike.prototype.map.entity;
 
 import org.lwjgl.Sys;
 
+import uk.co.quarklike.prototype.Log;
+import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.Util;
 
 public class Stats {
 	private EntityLiving parent;
-	private short hardMaxHealth, hardMaxMana, hardMaxStamina;
 	private short currentHealth, currentMana, currentStamina;
 	private short healthRegen, manaRegen, staminaRegen;
 	private byte hunger, tiredness, warmth;
 	private long lastTime;
 
-	public Stats(EntityLiving parent, short maxHealth, short health, short maxMana, short mana, short maxStamina, short stamina, byte hunger, byte tiredness, byte warmth) {
+	private short level;
+	private byte strength, dexterity, constitution, intelligence, wisdom, charisma;
+
+	public Stats(EntityLiving parent, short level, byte st_str, byte st_dex, byte st_con, byte st_int, byte st_wis, byte st_cha, short health, short mana, short stamina, byte hunger, byte tiredness, byte warmth) {
 		this.parent = parent;
-		this.hardMaxHealth = maxHealth;
+		this.level = level;
+		this.strength = st_str;
+		this.dexterity = st_dex;
+		this.constitution = st_con;
+		this.intelligence = st_int;
+		this.wisdom = st_wis;
+		this.charisma = st_cha;
 		this.currentHealth = health;
 		this.hunger = hunger;
-		this.hardMaxMana = maxMana;
 		this.currentMana = mana;
 		this.tiredness = tiredness;
-		this.hardMaxStamina = maxStamina;
 		this.currentStamina = stamina;
 		this.warmth = warmth;
 		this.healthRegen = this.manaRegen = this.staminaRegen = 1;
 		lastTime = Sys.getTime();
+	}
+
+	public void generateStats() {
+		strength = rollStat();
+		dexterity = rollStat();
+		constitution = rollStat();
+		intelligence = rollStat();
+		wisdom = rollStat();
+		charisma = rollStat();
+	}
+
+	private byte rollStat() {
+		byte stat = 0;
+		byte lowest = (byte) (Main.instance.getRand().nextInt(6) + 1);
+		stat += lowest;
+
+		for (int i = 1; i < 4; i++) {
+			byte roll = (byte) (Main.instance.getRand().nextInt(6) + 1);
+			if (roll < lowest)
+				lowest = roll;
+			stat += roll;
+		}
+
+		return (byte) (stat - lowest);
 	}
 
 	public void update() {
@@ -43,7 +75,7 @@ public class Stats {
 	}
 
 	public short getHardMaxHealth() {
-		return hardMaxHealth;
+		return (short) (4 + getConMod());
 	}
 
 	public short getSoftMaxHealth() {
@@ -59,7 +91,7 @@ public class Stats {
 	}
 
 	public short getHardMaxMana() {
-		return hardMaxMana;
+		return (short) (4 + getIntMod());
 	}
 
 	public short getSoftMaxMana() {
@@ -75,7 +107,7 @@ public class Stats {
 	}
 
 	public short getHardMaxStamina() {
-		return hardMaxStamina;
+		return (short) (4 + getDexMod());
 	}
 
 	public short getSoftMaxStamina() {
@@ -112,5 +144,57 @@ public class Stats {
 
 	public void addWarmth(byte warmth) {
 		this.warmth = (byte) Util.clamp(this.warmth + warmth, 0, 100);
+	}
+
+	public short getLevel() {
+		return level;
+	}
+
+	public byte getStr() {
+		return strength;
+	}
+
+	public byte getStrMod() {
+		return (byte) (Math.floor((float) (strength - 10) / 2) + Math.floor(level / 2));
+	}
+
+	public byte getDex() {
+		return dexterity;
+	}
+
+	public byte getDexMod() {
+		return (byte) (Math.floor((float) (dexterity - 10) / 2) + Math.floor(level / 2));
+	}
+
+	public byte getCon() {
+		return constitution;
+	}
+
+	public byte getConMod() {
+		return (byte) (Math.floor((float) (constitution - 10) / 2) + Math.floor(level / 2));
+	}
+
+	public byte getInt() {
+		return intelligence;
+	}
+
+	public byte getIntMod() {
+		return (byte) (Math.floor((float) (intelligence - 10) / 2) + Math.floor(level / 2));
+	}
+
+	public byte getWis() {
+		return wisdom;
+	}
+
+	public byte getWisMod() {
+		return (byte) (Math.floor((float) (wisdom - 10) / 2) + Math.floor(level / 2));
+	}
+
+	public byte getCha() {
+		return charisma;
+	}
+
+	public byte getChaMod() {
+		return (byte) (Math.floor((float) (charisma - 10) / 2) + Math.floor(level / 2));
 	}
 }

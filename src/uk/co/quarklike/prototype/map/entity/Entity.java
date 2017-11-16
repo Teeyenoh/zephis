@@ -21,7 +21,7 @@ public class Entity {
 	}
 
 	public void loadEntity(String name, int x, int y, byte subX, byte subY) {
-		this.entityName = name;
+		this.entityName = name.trim();
 		this.x = x;
 		this.y = y;
 		this.subX = subX;

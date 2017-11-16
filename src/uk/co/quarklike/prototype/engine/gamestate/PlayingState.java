@@ -1,10 +1,12 @@
 package uk.co.quarklike.prototype.engine.gamestate;
 
+import java.util.ArrayList;
+
 import org.lwjgl.input.Keyboard;
 
 import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.engine.ContentHub;
-import uk.co.quarklike.prototype.engine.gui.windows.GUIStats;
+import uk.co.quarklike.prototype.engine.gui.windows.GUIBars;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
@@ -14,7 +16,7 @@ public class PlayingState implements GameState {
 	private Map map;
 	private EntityLiving player;
 
-	private GUIStats stats;
+	private GUIBars stats;
 
 	public PlayingState(Map map, EntityLiving player) {
 		this.map = map;
@@ -29,7 +31,7 @@ public class PlayingState implements GameState {
 		contentHub.setMapToDraw(map);
 		contentHub.setCamera(player);
 
-		stats = new GUIStats(contentHub, player);
+		stats = new GUIBars(contentHub, player);
 	}
 
 	@Override
@@ -61,6 +63,8 @@ public class PlayingState implements GameState {
 					contentHub.setNewState(new InventoryState(map, player));
 				} else if (Keyboard.getEventKey() == Keyboard.KEY_G) {
 					contentHub.setNewState(new InventoryState(map, player, map.getItem(player.getX(), player.getY()), "GUI_WINDOW_CONTAINER_TITLE_GROUND"));
+				} else if (Keyboard.getEventKey() == Keyboard.KEY_C) {
+					contentHub.setNewState(new CharacterState(map, player));
 				}
 
 				if (Keyboard.getEventKey() == Keyboard.KEY_W) {

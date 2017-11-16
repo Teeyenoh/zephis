@@ -20,15 +20,15 @@ public class EntityLiving extends Entity {
 
 	public EntityLiving(String name, String texture) {
 		super(name, texture);
-		this.stats = new Stats(this, (short) 100, (short) 100, (short) 100, (short) 100, (short) 100, (short) 100, (byte) 100, (byte) 100, (byte) 100);
+		this.stats = new Stats(this, (short) 1, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (short) 100, (short) 100, (short) 100, (byte) 100, (byte) 100, (byte) 100);
 		this.inventory = new Inventory(10);
 	}
 
-	public void loadEntity(String name, int x, int y, byte subX, byte subY, byte direction, boolean moving, short maxHealth, short health, short maxMana, short mana, short maxStamina, short stamina, byte hunger, byte tiredness, byte warmth) {
+	public void loadEntity(String name, int x, int y, byte subX, byte subY, byte direction, boolean moving, short level, byte st_str, byte st_dex, byte st_con, byte st_int, byte st_wis, byte st_cha, short health, short mana, short stamina, byte hunger, byte tiredness, byte warmth) {
 		super.loadEntity(name, x, y, subX, subY);
 		this.direction = direction;
 		this.moving = moving;
-		this.stats = new Stats(this, maxHealth, health, maxMana, mana, maxStamina, stamina, hunger, tiredness, warmth);
+		this.stats = new Stats(this, level, st_str, st_dex, st_con, st_int, st_wis, st_cha, health, mana, stamina, hunger, tiredness, warmth);
 	}
 
 	@Deprecated
@@ -41,12 +41,12 @@ public class EntityLiving extends Entity {
 	public void update() {
 		handleMovement();
 
-		stats.update();
-
 		if (stats.getStamina() <= 0) {
 			stats.addStamina((byte) -stats.getStamina());
 			stopSprinting();
 		}
+
+		stats.update();
 
 		if (!moving) {
 			if (queued != -1) {

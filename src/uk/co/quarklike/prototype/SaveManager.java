@@ -155,7 +155,8 @@ public class SaveManager {
 	}
 
 	private static void newGame(Map map, EntityLiving player) {
-		player.loadEntity("Player", 15, 15, (byte) 0, (byte) 0, Map.NORTH, false, (short) 100, (short) 100, (short) 100, (short) 100, (short) 100, (short) 100, (byte) 100, (byte) 100, (byte) 100);
+		player.loadEntity("Player", 15, 15, (byte) 0, (byte) 0, Map.NORTH, false, (short) 1, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (short) 100, (short) 100, (short) 100, (byte) 100, (byte) 100, (byte) 100);
+		player.getStats().generateStats();
 		player.register(map);
 		player.addItem(new ItemStack(1, (byte) 5));
 		player.addItem(new ItemStack(2, (byte) 5));
@@ -181,11 +182,15 @@ public class SaveManager {
 			EntityLiving e_living = (EntityLiving) e;
 			writeByte(out, e_living.getDirection());
 			writeBool(out, e_living.isMoving());
-			writeShort(out, e_living.getStats().getHardMaxHealth());
+			writeShort(out, e_living.getStats().getLevel());
+			writeByte(out, e_living.getStats().getStr());
+			writeByte(out, e_living.getStats().getDex());
+			writeByte(out, e_living.getStats().getCon());
+			writeByte(out, e_living.getStats().getInt());
+			writeByte(out, e_living.getStats().getWis());
+			writeByte(out, e_living.getStats().getCha());
 			writeShort(out, e_living.getStats().getHealth());
-			writeShort(out, e_living.getStats().getHardMaxMana());
 			writeShort(out, e_living.getStats().getMana());
-			writeShort(out, e_living.getStats().getHardMaxStamina());
 			writeShort(out, e_living.getStats().getStamina());
 			writeByte(out, e_living.getStats().getHunger());
 			writeByte(out, e_living.getStats().getTiredness());
@@ -223,19 +228,22 @@ public class SaveManager {
 		case LIVING:
 			byte direction = buffer.get();
 			boolean moving = buffer.get() == 1;
-			short maxHealth = buffer.getShort();
+			short level = buffer.getShort();
+			byte st_str = buffer.get();
+			byte st_dex = buffer.get();
+			byte st_con = buffer.get();
+			byte st_int = buffer.get();
+			byte st_wis = buffer.get();
+			byte st_cha = buffer.get();
 			short health = buffer.getShort();
-			short maxMana = buffer.getShort();
 			short mana = buffer.getShort();
-			short maxStamina = buffer.getShort();
 			short stamina = buffer.getShort();
 			byte hunger = buffer.get();
 			byte tiredness = buffer.get();
 			byte warmth = buffer.get();
 
 			e = isPlayer ? player : new EntityLiving("UNKNOWN", "tiles/grass.png");
-			((EntityLiving) e).loadEntity(name, x, y, subX, subY, direction, moving, maxHealth, health, maxMana, mana, maxStamina, stamina, hunger, tiredness, warmth);
-
+			((EntityLiving) e).loadEntity(name, x, y, subX, subY, direction, moving, level, st_str, st_dex, st_con, st_int, st_wis, st_cha, health, mana, stamina, hunger, tiredness, warmth);
 			short invItems = buffer.getShort();
 
 			for (int i = 0; i < invItems; i++) {

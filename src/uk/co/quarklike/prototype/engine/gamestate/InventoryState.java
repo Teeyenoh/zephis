@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard;
 import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.engine.ContentHub;
 import uk.co.quarklike.prototype.engine.gui.windows.GUIInventory;
-import uk.co.quarklike.prototype.engine.gui.windows.GUIStats;
+import uk.co.quarklike.prototype.engine.gui.windows.GUIBars;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
 import uk.co.quarklike.prototype.map.item.Inventory;
@@ -26,7 +26,7 @@ public class InventoryState implements GameState {
 	private int item_container;
 
 	private GUIInventory inventory;
-	private GUIStats stats;
+	private GUIBars stats;
 
 	public InventoryState(Map map, EntityLiving player) {
 		this.map = map;
@@ -48,7 +48,7 @@ public class InventoryState implements GameState {
 		contentHub.setDrawMap(false);
 		inventory = !containerOpen ? new GUIInventory(contentHub, player) : new GUIInventory(contentHub, player, container, name);
 		inventory.setScreen(screen = Util.wrapIf(screen + 1, 0, 1, containerOpen, screen));
-		stats = new GUIStats(contentHub, player);
+		stats = new GUIBars(contentHub, player);
 	}
 
 	private void closeMenu() {
