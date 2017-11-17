@@ -45,7 +45,7 @@ public class GameManager implements Manager {
 	@Override
 	public void postInit() {
 		Log.info("Loading save file...");
-		SaveManager.readFile(currentMap, player, "testsave.qs1");
+		SaveManager.readFile(contentHub, currentMap, player, "testsave.qs1");
 		switchState(new PlayingState(currentMap, player));
 	}
 

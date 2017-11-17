@@ -18,6 +18,6 @@ public class Language {
 	}
 
 	public static String get(String t) {
-		return (String) lang.getOrDefault(t, t);
+		return t == null ? "" : (String) lang.getOrDefault(t, t);
 	}
 }

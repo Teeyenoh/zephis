@@ -31,6 +31,10 @@ public class EntityLiving extends Entity {
 		this.stats = new Stats(this, level, st_str, st_dex, st_con, st_int, st_wis, st_cha, health, mana, stamina, hunger, tiredness, warmth);
 	}
 
+	public void setStats(byte[] stats) {
+		this.stats = new Stats(this, (short) 1, stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], (short) 500, (short) 500, (short) 500, (byte) 100, (byte) 100, (byte) 100);
+	}
+
 	@Deprecated
 	@Override
 	public void loadEntity(String name, int x, int y, byte subX, byte subY) {
@@ -105,15 +109,6 @@ public class EntityLiving extends Entity {
 
 	public boolean addItem(ItemStack i) {
 		return inventory.addItem(i.getItemID(), i.getQuantity());
-	}
-
-	public void pickUpItem() {
-		// int item = map.getItem(getX(), getY());
-		// if (item != 0) {
-		// if (inventory.addItem(item, (byte) 1)) {
-		// map.setItem(getX(), getY(), 0);
-		// }
-		// }
 	}
 
 	public void dropItem(ItemStack i) {

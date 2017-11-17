@@ -8,6 +8,8 @@ import com.healthmarketscience.jackcess.DatabaseBuilder;
 import com.healthmarketscience.jackcess.Row;
 import com.healthmarketscience.jackcess.Table;
 
+import uk.co.quarklike.prototype.map.entity.CharClass;
+import uk.co.quarklike.prototype.map.entity.Race;
 import uk.co.quarklike.prototype.map.item.Item;
 import uk.co.quarklike.prototype.map.item.Material;
 import uk.co.quarklike.prototype.map.item.type.ItemType;
@@ -42,6 +44,16 @@ public class DatabaseParser {
 			Table materials = database.getTable("materials");
 			for (Row r : materials) {
 				new Material(r.getInt("matID"), r.getString("matName"));
+			}
+
+			Table races = database.getTable("races");
+			for (Row r : races) {
+				new Race(r.getInt("raceID"), r.getString("raceName"));
+			}
+
+			Table classes = database.getTable("classes");
+			for (Row r : classes) {
+				new CharClass(r.getInt("classID"), r.getString("className"));
 			}
 		} catch (IOException e) {
 			Log.err("Failed to load database: " + fileName, e);

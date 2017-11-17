@@ -10,6 +10,8 @@ import java.util.Collection;
 
 import org.lwjgl.util.vector.Vector4f;
 
+import uk.co.quarklike.prototype.engine.ContentHub;
+import uk.co.quarklike.prototype.engine.gamestate.CreationState;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
@@ -57,11 +59,11 @@ public class SaveManager {
 	public static final byte PROJECTILE = 2;
 	public static final byte ITEM = 3;
 
-	public static void readFile(Map map, EntityLiving player, String fileName) {
+	public static void readFile(ContentHub hub, Map map, EntityLiving player, String fileName) {
 		try {
 			File f = new File("save/" + fileName);
 			if (!f.exists()) {
-				newGame(map, player);
+				newGame(hub, map, player);
 				return;
 			}
 
@@ -154,12 +156,17 @@ public class SaveManager {
 		return String.valueOf(out);
 	}
 
-	private static void newGame(Map map, EntityLiving player) {
-		player.loadEntity("Player", 15, 15, (byte) 0, (byte) 0, Map.NORTH, false, (short) 1, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (short) 100, (short) 100, (short) 100, (byte) 100, (byte) 100, (byte) 100);
-		player.getStats().generateStats();
-		player.register(map);
-		player.addItem(new ItemStack(1, (byte) 5));
-		player.addItem(new ItemStack(2, (byte) 5));
+	private static void newGame(ContentHub hub, Map map, EntityLiving player) {
+		// player.loadEntity("Player", 15, 15, (byte) 0, (byte) 0, Map.NORTH,
+		// false, (short) 1, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (byte)
+		// 10, (byte) 10, (short) 100, (short) 100, (short) 100, (byte) 100,
+		// (byte) 100, (byte) 100);
+		// player.getStats().generateStats();
+		// player.register(map);
+		// player.addItem(new ItemStack(1, (byte) 5));
+		// player.addItem(new ItemStack(2, (byte) 5));
+		
+		hub.setNewState(new CreationState(map));
 	}
 
 	private static void writeEntity(FileOutputStream out, Map map, EntityLiving player, Entity e) throws IOException {
