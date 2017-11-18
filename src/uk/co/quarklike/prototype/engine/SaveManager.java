@@ -59,12 +59,12 @@ public class SaveManager {
 	public static final byte PROJECTILE = 2;
 	public static final byte ITEM = 3;
 
-	public static void readFile(ContentHub hub, Map map, String fileName) {
+	public static boolean readFile(ContentHub hub, Map map, String fileName) {
 		try {
 			File f = new File("save/" + fileName);
 			if (!f.exists()) {
 				newGame(hub, map);
-				return;
+				return false;
 			}
 
 			FileInputStream in = new FileInputStream(f);
@@ -96,6 +96,8 @@ public class SaveManager {
 		} catch (IOException e) {
 			Log.err("Failed to read save game", e);
 		}
+
+		return true;
 	}
 
 	private static void writeByteArray(FileOutputStream stream, byte[] array) throws IOException {
@@ -162,7 +164,7 @@ public class SaveManager {
 
 	private static void writeEntity(FileOutputStream out, Map map, EntityLiving player, Entity e) throws IOException {
 		byte type = e.getType();
-
+		;
 		writeByte(out, e.equals(player) ? (byte) 1 : (byte) 0);
 		writeString(out, e.getName(), 32);
 		writeByte(out, type);
@@ -242,7 +244,7 @@ public class SaveManager {
 
 			e = new EntityLiving("UNKNOWN", "tiles/grass.png");
 			if (isPlayer)
-				hub.setCamera(e);
+				hub.setPlayer((EntityLiving) e);
 			((EntityLiving) e).loadEntity(name, x, y, subX, subY, direction, moving, level, st_str, st_dex, st_con, st_int, st_wis, st_cha, health, mana, stamina, hunger, tiredness, warmth);
 			short invItems = buffer.getShort();
 

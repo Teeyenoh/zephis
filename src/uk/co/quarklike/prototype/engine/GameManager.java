@@ -17,7 +17,6 @@ import uk.co.quarklike.prototype.map.entity.EntityLiving;
 public class GameManager implements Manager {
 	private ContentHub contentHub;
 	private Map currentMap;
-	private EntityLiving player;
 	private GameState currentState;
 
 	// Temp
@@ -42,14 +41,14 @@ public class GameManager implements Manager {
 		Language.initLanguage("en_GB");
 		Log.info("Loading map...");
 		currentMap = new Map(MapData.fromFile("test.qm1"));
-		player = new EntityLiving("Player", "tiles/grass.png");
 	}
 
 	@Override
 	public void postInit() {
 		Log.info("Loading save file...");
-		SaveManager.readFile(contentHub, currentMap, "testsave.qs1");
-		switchState(new PlayingState(currentMap, (EntityLiving) contentHub.getCamera()));
+		if (SaveManager.readFile(contentHub, currentMap, "testsave.qs1")) {
+			switchState(new PlayingState(currentMap, contentHub.getPlayer()));
+		}
 	}
 
 	@Override
@@ -61,8 +60,6 @@ public class GameManager implements Manager {
 			this.switchState(contentHub.getNewState());
 			contentHub.setNewState(null);
 		}
-
-		this.player = (EntityLiving) contentHub.getCamera();
 
 		if (Main.DEBUG) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_1))
@@ -97,8 +94,8 @@ public class GameManager implements Manager {
 			mouseX += (mouseX < 0 ? -16 : 16);
 			mouseY += (mouseY < 0 ? -16 : 16);
 			int mouseWheel = Mouse.getDWheel();
-			int tileX = ((mouseX + player.getSubX()) / 32) + player.getX();
-			int tileY = -(((mouseY + player.getSubY()) / 32) - player.getY());
+			int tileX = ((mouseX + contentHub.getCamera().getSubX()) / 32) + contentHub.getCamera().getX();
+			int tileY = -(((mouseY + contentHub.getCamera().getSubY()) / 32) - contentHub.getCamera().getY());
 
 			while (Mouse.next()) {
 				if (Mouse.getEventButtonState()) {
@@ -147,7 +144,7 @@ public class GameManager implements Manager {
 	public void deinit() {
 		if (Main.DEBUG)
 			currentMap.save("test.qm1");
-		SaveManager.saveFile(currentMap, player, "testsave.qs1");
+		SaveManager.saveFile(currentMap, contentHub.getPlayer(), "testsave.qs1");
 	}
 
 	@Override

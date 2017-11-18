@@ -6,6 +6,7 @@ import uk.co.quarklike.prototype.engine.gamestate.GameState;
 import uk.co.quarklike.prototype.engine.gui.windows.GUIWindow;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
+import uk.co.quarklike.prototype.map.entity.EntityLiving;
 
 public class ContentHub {
 	private ResourceManager resources;
@@ -14,8 +15,9 @@ public class ContentHub {
 
 	private Map mapToDraw;
 	private Entity camera;
+	private EntityLiving player;
 	private boolean drawMap;
-	
+
 	private GameState newState;
 
 	private ArrayList<GUIWindow> gui = new ArrayList<GUIWindow>();
@@ -86,5 +88,13 @@ public class ContentHub {
 
 	public void setNewState(GameState newState) {
 		this.newState = newState;
+	}
+
+	public void setPlayer(EntityLiving player) {
+		this.player = player;
+	}
+
+	public EntityLiving getPlayer() {
+		return player;
 	}
 }
