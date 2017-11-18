@@ -64,6 +64,7 @@ public class CreationState implements GameState {
 		EntityLiving player = new EntityLiving(name, "tiles/grass.png");
 		player.setStats(stats);
 		player.register(map);
+		contentHub.setCamera(player);
 		contentHub.setNewState(new PlayingState(map, player));
 	}
 

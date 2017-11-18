@@ -1,4 +1,4 @@
-package uk.co.quarklike.prototype;
+package uk.co.quarklike.prototype.engine;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import com.healthmarketscience.jackcess.DatabaseBuilder;
 import com.healthmarketscience.jackcess.Row;
 import com.healthmarketscience.jackcess.Table;
 
+import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.map.entity.CharClass;
 import uk.co.quarklike.prototype.map.entity.Race;
 import uk.co.quarklike.prototype.map.item.Item;

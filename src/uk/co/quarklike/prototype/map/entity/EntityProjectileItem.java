@@ -1,6 +1,6 @@
 package uk.co.quarklike.prototype.map.entity;
 
-import uk.co.quarklike.prototype.Physics;
+import uk.co.quarklike.prototype.engine.Physics;
 import uk.co.quarklike.prototype.map.item.Item;
 import uk.co.quarklike.prototype.map.item.ItemStack;
 

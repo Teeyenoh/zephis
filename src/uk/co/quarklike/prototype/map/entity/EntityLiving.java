@@ -1,7 +1,7 @@
 package uk.co.quarklike.prototype.map.entity;
 
 import uk.co.quarklike.prototype.Log;
-import uk.co.quarklike.prototype.SaveManager;
+import uk.co.quarklike.prototype.engine.SaveManager;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.item.Inventory;
 import uk.co.quarklike.prototype.map.item.ItemStack;

@@ -45,8 +45,8 @@ public class GameManager implements Manager {
 	@Override
 	public void postInit() {
 		Log.info("Loading save file...");
-		SaveManager.readFile(contentHub, currentMap, player, "testsave.qs1");
-		switchState(new PlayingState(currentMap, player));
+		SaveManager.readFile(contentHub, currentMap, "testsave.qs1");
+		switchState(new PlayingState(currentMap, (EntityLiving) contentHub.getCamera()));
 	}
 
 	@Override
@@ -58,6 +58,8 @@ public class GameManager implements Manager {
 			this.switchState(contentHub.getNewState());
 			contentHub.setNewState(null);
 		}
+
+		this.player = (EntityLiving) contentHub.getCamera();
 
 		if (Main.DEBUG) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_1))

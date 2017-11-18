@@ -1,4 +1,4 @@
-package uk.co.quarklike.prototype;
+package uk.co.quarklike.prototype.engine;
 
 public class Physics {
 	public static int maxRange(float force, float mass, float height) {

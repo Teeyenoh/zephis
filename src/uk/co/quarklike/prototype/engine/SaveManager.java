@@ -1,4 +1,4 @@
-package uk.co.quarklike.prototype;
+package uk.co.quarklike.prototype.engine;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,7 @@ import java.util.Collection;
 
 import org.lwjgl.util.vector.Vector4f;
 
-import uk.co.quarklike.prototype.engine.ContentHub;
+import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.engine.gamestate.CreationState;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.Entity;
@@ -59,11 +59,11 @@ public class SaveManager {
 	public static final byte PROJECTILE = 2;
 	public static final byte ITEM = 3;
 
-	public static void readFile(ContentHub hub, Map map, EntityLiving player, String fileName) {
+	public static void readFile(ContentHub hub, Map map, String fileName) {
 		try {
 			File f = new File("save/" + fileName);
 			if (!f.exists()) {
-				newGame(hub, map, player);
+				newGame(hub, map);
 				return;
 			}
 
@@ -79,7 +79,7 @@ public class SaveManager {
 			short entities = buffer.getShort();
 
 			for (int entity = 0; entity < entities; entity++) {
-				readEntity(buffer, player, map);
+				readEntity(hub, buffer, map);
 			}
 
 			short mapItems = buffer.getShort();
@@ -156,16 +156,7 @@ public class SaveManager {
 		return String.valueOf(out);
 	}
 
-	private static void newGame(ContentHub hub, Map map, EntityLiving player) {
-		// player.loadEntity("Player", 15, 15, (byte) 0, (byte) 0, Map.NORTH,
-		// false, (short) 1, (byte) 10, (byte) 10, (byte) 10, (byte) 10, (byte)
-		// 10, (byte) 10, (short) 100, (short) 100, (short) 100, (byte) 100,
-		// (byte) 100, (byte) 100);
-		// player.getStats().generateStats();
-		// player.register(map);
-		// player.addItem(new ItemStack(1, (byte) 5));
-		// player.addItem(new ItemStack(2, (byte) 5));
-		
+	private static void newGame(ContentHub hub, Map map) {
 		hub.setNewState(new CreationState(map));
 	}
 
@@ -214,7 +205,7 @@ public class SaveManager {
 		}
 	}
 
-	private static void readEntity(ByteBuffer buffer, EntityLiving player, Map map) throws IOException {
+	private static void readEntity(ContentHub hub, ByteBuffer buffer, Map map) throws IOException {
 		Entity e = null;
 
 		boolean isPlayer = buffer.get() == 1;
@@ -249,7 +240,9 @@ public class SaveManager {
 			byte tiredness = buffer.get();
 			byte warmth = buffer.get();
 
-			e = isPlayer ? player : new EntityLiving("UNKNOWN", "tiles/grass.png");
+			e = new EntityLiving("UNKNOWN", "tiles/grass.png");
+			if (isPlayer)
+				hub.setCamera(e);
 			((EntityLiving) e).loadEntity(name, x, y, subX, subY, direction, moving, level, st_str, st_dex, st_con, st_int, st_wis, st_cha, health, mana, stamina, hunger, tiredness, warmth);
 			short invItems = buffer.getShort();
 

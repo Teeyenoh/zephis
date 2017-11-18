@@ -1,6 +1,6 @@
 package uk.co.quarklike.prototype.map.entity;
 
-import uk.co.quarklike.prototype.SaveManager;
+import uk.co.quarklike.prototype.engine.SaveManager;
 import uk.co.quarklike.prototype.map.Map;
 
 public class Entity {
