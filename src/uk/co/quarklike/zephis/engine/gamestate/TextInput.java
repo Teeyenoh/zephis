@@ -7,7 +7,8 @@ public class TextInput {
 		} else if (Character.isSpaceChar(c)) {
 			return s.substring(0, index) + ' ' + s.substring(index);
 		} else if (c == '\b') {
-			return s.substring(0, index - 1) + s.substring(index);
+			if (index != 0)
+				return s.substring(0, index - 1) + s.substring(index);
 		}
 
 		return s;

@@ -13,8 +13,10 @@ import org.lwjgl.util.vector.Vector4f;
 import uk.co.quarklike.zephis.Log;
 import uk.co.quarklike.zephis.engine.gamestate.CreationState;
 import uk.co.quarklike.zephis.map.Map;
+import uk.co.quarklike.zephis.map.entity.CharClass;
 import uk.co.quarklike.zephis.map.entity.Entity;
 import uk.co.quarklike.zephis.map.entity.EntityLiving;
+import uk.co.quarklike.zephis.map.entity.Race;
 import uk.co.quarklike.zephis.map.item.ItemStack;
 
 public class SaveManager {
@@ -164,7 +166,7 @@ public class SaveManager {
 
 	private static void writeEntity(FileOutputStream out, Map map, EntityLiving player, Entity e) throws IOException {
 		byte type = e.getType();
-		;
+		
 		writeByte(out, e.equals(player) ? (byte) 1 : (byte) 0);
 		writeString(out, e.getName(), 32);
 		writeByte(out, type);
@@ -229,6 +231,8 @@ public class SaveManager {
 			byte direction = buffer.get();
 			boolean moving = buffer.get() == 1;
 			short level = buffer.getShort();
+			byte race = buffer.get();
+			byte charClass = buffer.get();
 			byte st_str = buffer.get();
 			byte st_dex = buffer.get();
 			byte st_con = buffer.get();
@@ -245,7 +249,7 @@ public class SaveManager {
 			e = new EntityLiving("UNKNOWN", "tiles/grass.png");
 			if (isPlayer)
 				hub.setPlayer((EntityLiving) e);
-			((EntityLiving) e).loadEntity(name, x, y, subX, subY, direction, moving, level, st_str, st_dex, st_con, st_int, st_wis, st_cha, health, mana, stamina, hunger, tiredness, warmth);
+			((EntityLiving) e).loadEntity(name, Race.getRace(race), CharClass.getCharClass(charClass), x, y, subX, subY, direction, moving, level, st_str, st_dex, st_con, st_int, st_wis, st_cha, health, mana, stamina, hunger, tiredness, warmth);
 			short invItems = buffer.getShort();
 
 			for (int i = 0; i < invItems; i++) {

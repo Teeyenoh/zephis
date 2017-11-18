@@ -15,6 +15,8 @@ public class EntityLiving extends Entity {
 	protected byte direction;
 	protected byte queued = -1;
 
+	protected Race race;
+	protected CharClass charClass;
 	protected Stats stats;
 	protected Inventory inventory;
 
@@ -24,8 +26,10 @@ public class EntityLiving extends Entity {
 		this.inventory = new Inventory(10);
 	}
 
-	public void loadEntity(String name, int x, int y, byte subX, byte subY, byte direction, boolean moving, short level, byte st_str, byte st_dex, byte st_con, byte st_int, byte st_wis, byte st_cha, short health, short mana, short stamina, byte hunger, byte tiredness, byte warmth) {
+	public void loadEntity(String name, Race race, CharClass charClass, int x, int y, byte subX, byte subY, byte direction, boolean moving, short level, byte st_str, byte st_dex, byte st_con, byte st_int, byte st_wis, byte st_cha, short health, short mana, short stamina, byte hunger, byte tiredness, byte warmth) {
 		super.loadEntity(name, x, y, subX, subY);
+		this.race = race;
+		this.charClass = charClass;
 		this.direction = direction;
 		this.moving = moving;
 		this.stats = new Stats(this, level, st_str, st_dex, st_con, st_int, st_wis, st_cha, health, mana, stamina, hunger, tiredness, warmth);
@@ -164,5 +168,13 @@ public class EntityLiving extends Entity {
 	@Override
 	public byte getType() {
 		return SaveManager.LIVING;
+	}
+
+	public Race getRace() {
+		return race;
+	}
+
+	public CharClass getCharClass() {
+		return charClass;
 	}
 }

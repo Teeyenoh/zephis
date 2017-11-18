@@ -30,21 +30,22 @@ public class GUIStats extends GUIWindow {
 
 		comps.add(new GUIImage(x, y, width, height, "gui/background.png"));
 		comps.add(new GUIText(x, nearY, GraphicsManager.titleFont, Color.white, player.getName(), GUIText.ALIGN_CENTRE, GUIText.CASE_TITLE));
+		comps.add(new GUIText(x, nearY + 32, GraphicsManager.defaultFont, Color.white, player.getRace().getName() + " " + player.getCharClass().getName() + " " + player.getStats().getLevel(), GUIText.ALIGN_CENTRE, GUIText.CASE_TITLE));
 
 		int offs = GraphicsManager.defaultFont.getLineHeight() + 6;
 
 		comps.add(new GUIText(nearX, nearY + 32 + offs, GraphicsManager.defaultFont, Color.white, "GUI_WINDOW_CHARACTER_ABILITY_STRENGTH", GUIText.ALIGN_LEFT, GUIText.CASE_TITLE));
-		comps.add(new GUIText(farX, nearY + 32 + offs, GraphicsManager.defaultFont, Color.white, player.getStats().getStr() + " ("+ getModString(player.getStats().getStrMod())+")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
+		comps.add(new GUIText(farX, nearY + 32 + offs, GraphicsManager.defaultFont, Color.white, player.getStats().getStr() + " (" + getModString(player.getStats().getStrMod()) + ")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
 		comps.add(new GUIText(nearX, nearY + 32 + (2 * offs), GraphicsManager.defaultFont, Color.white, "GUI_WINDOW_CHARACTER_ABILITY_DEXTERITY", GUIText.ALIGN_LEFT, GUIText.CASE_TITLE));
-		comps.add(new GUIText(farX, nearY + 32 + (2 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getDex() + " ("+ getModString(player.getStats().getDexMod())+")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
+		comps.add(new GUIText(farX, nearY + 32 + (2 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getDex() + " (" + getModString(player.getStats().getDexMod()) + ")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
 		comps.add(new GUIText(nearX, nearY + 32 + (3 * offs), GraphicsManager.defaultFont, Color.white, "GUI_WINDOW_CHARACTER_ABILITY_CONSTITUTION", GUIText.ALIGN_LEFT, GUIText.CASE_TITLE));
-		comps.add(new GUIText(farX, nearY + 32 + (3 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getCon() + " ("+ getModString(player.getStats().getConMod())+")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
+		comps.add(new GUIText(farX, nearY + 32 + (3 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getCon() + " (" + getModString(player.getStats().getConMod()) + ")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
 		comps.add(new GUIText(nearX, nearY + 32 + (4 * offs), GraphicsManager.defaultFont, Color.white, "GUI_WINDOW_CHARACTER_ABILITY_INTELLIGENCE", GUIText.ALIGN_LEFT, GUIText.CASE_TITLE));
-		comps.add(new GUIText(farX, nearY + 32 + (4 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getInt() + " ("+ getModString(player.getStats().getIntMod())+")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
+		comps.add(new GUIText(farX, nearY + 32 + (4 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getInt() + " (" + getModString(player.getStats().getIntMod()) + ")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
 		comps.add(new GUIText(nearX, nearY + 32 + (5 * offs), GraphicsManager.defaultFont, Color.white, "GUI_WINDOW_CHARACTER_ABILITY_WISDOM", GUIText.ALIGN_LEFT, GUIText.CASE_TITLE));
-		comps.add(new GUIText(farX, nearY + 32 + (5 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getWis() + " ("+ getModString(player.getStats().getWisMod())+")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
+		comps.add(new GUIText(farX, nearY + 32 + (5 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getWis() + " (" + getModString(player.getStats().getWisMod()) + ")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
 		comps.add(new GUIText(nearX, nearY + 32 + (6 * offs), GraphicsManager.defaultFont, Color.white, "GUI_WINDOW_CHARACTER_ABILITY_CHARISMA", GUIText.ALIGN_LEFT, GUIText.CASE_TITLE));
-		comps.add(new GUIText(farX, nearY + 32 + (6 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getCha() + " ("+ getModString(player.getStats().getChaMod())+")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
+		comps.add(new GUIText(farX, nearY + 32 + (6 * offs), GraphicsManager.defaultFont, Color.white, player.getStats().getCha() + " (" + getModString(player.getStats().getChaMod()) + ")", GUIText.ALIGN_RIGHT, GUIText.CASE_DEFAULT));
 	}
 
 	private String getModString(byte mod) {
