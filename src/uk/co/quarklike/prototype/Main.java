@@ -6,7 +6,7 @@ import uk.co.quarklike.prototype.engine.*;
 
 public class Main implements Runnable {
 	public static final boolean DEBUG = Boolean.valueOf(System.getenv("DEBUG"));
-	public static final String TITLE = "Zephis v0.5.3-alpha";
+	public static final String TITLE = "Zephis v0.5.3.1-alpha";
 	public static final String TEST_MESSAGE = "Welcome to " + TITLE + "!\nPlease test everything to do with character creation and save loading!\n\nThanks! Dylan";
 
 	public static Main instance;
