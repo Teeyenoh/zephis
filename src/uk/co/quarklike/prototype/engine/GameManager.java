@@ -4,7 +4,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
-import uk.co.quarklike.prototype.*;
+import uk.co.quarklike.prototype.Language;
+import uk.co.quarklike.prototype.Log;
+import uk.co.quarklike.prototype.Main;
+import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.engine.gamestate.GameState;
 import uk.co.quarklike.prototype.engine.gamestate.PlayingState;
 import uk.co.quarklike.prototype.map.Map;

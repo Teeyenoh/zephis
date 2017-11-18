@@ -2,7 +2,6 @@ package uk.co.quarklike.prototype.map.entity;
 
 import org.lwjgl.Sys;
 
-import uk.co.quarklike.prototype.Log;
 import uk.co.quarklike.prototype.Main;
 import uk.co.quarklike.prototype.Util;
 

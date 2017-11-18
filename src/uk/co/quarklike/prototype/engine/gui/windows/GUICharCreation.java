@@ -6,7 +6,6 @@ import uk.co.quarklike.prototype.engine.ContentHub;
 import uk.co.quarklike.prototype.engine.GraphicsManager;
 import uk.co.quarklike.prototype.engine.gui.GUIImage;
 import uk.co.quarklike.prototype.engine.gui.GUIText;
-import uk.co.quarklike.prototype.map.entity.EntityLiving;
 
 public class GUICharCreation extends GUIWindow {
 	private GUIText name;

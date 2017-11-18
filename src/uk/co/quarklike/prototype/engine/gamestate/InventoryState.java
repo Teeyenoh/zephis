@@ -4,8 +4,8 @@ import org.lwjgl.input.Keyboard;
 
 import uk.co.quarklike.prototype.Util;
 import uk.co.quarklike.prototype.engine.ContentHub;
-import uk.co.quarklike.prototype.engine.gui.windows.GUIInventory;
 import uk.co.quarklike.prototype.engine.gui.windows.GUIBars;
+import uk.co.quarklike.prototype.engine.gui.windows.GUIInventory;
 import uk.co.quarklike.prototype.map.Map;
 import uk.co.quarklike.prototype.map.entity.EntityLiving;
 import uk.co.quarklike.prototype.map.item.Inventory;

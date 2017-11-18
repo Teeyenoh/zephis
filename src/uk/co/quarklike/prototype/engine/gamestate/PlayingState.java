@@ -1,7 +1,5 @@
 package uk.co.quarklike.prototype.engine.gamestate;
 
-import java.util.ArrayList;
-
 import org.lwjgl.input.Keyboard;
 
 import uk.co.quarklike.prototype.Util;
