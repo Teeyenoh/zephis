@@ -1,46 +1,34 @@
 package uk.co.quarklike.zephis.src;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-
-import static org.lwjgl.opengl.GL11.*;
-
 public class Main implements Runnable {
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
 	public static final String TITLE = "Zephis";
 
+	public static Main instance;
+
 	private boolean _running;
 	private Thread _thread;
 
-	public void init() {
-		try {
-			Display.setDisplayMode(new DisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT));
-			Display.setTitle(TITLE);
-			Display.create();
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-		}
+	private WindowManager _mWindow;
+	private GameManager _mGame;
 
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glOrtho(-WINDOW_WIDTH / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, -WINDOW_HEIGHT / 2, -1, 1);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
+	public void init() {
+		this._mWindow = new WindowManager();
+		this._mGame = new GameManager();
+
+		this._mWindow.createWindow(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, Main.TITLE);
+		this._mGame.initGame();
 	}
 
 	public void update() {
-		glClear(GL_COLOR_BUFFER_BIT);
-		
-		if (Display.isCloseRequested())
-			stop();
-
-		Display.update();
+		this._mWindow.updateWindow();
+		this._mGame.updateGame();
 	}
 
 	public void deinit() {
-		Display.destroy();
+		this._mWindow.destroyWindow();
+		this._mGame.destroyGame();
 	}
 
 	public void run() {
@@ -66,7 +54,7 @@ public class Main implements Runnable {
 	}
 
 	public static final void main(String[] args) {
-		Main instance = new Main();
+		instance = new Main();
 		instance.start();
 	}
 }
