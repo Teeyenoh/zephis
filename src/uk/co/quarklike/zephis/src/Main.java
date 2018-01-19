@@ -1,11 +1,14 @@
 package uk.co.quarklike.zephis.src;
 
+import java.util.Random;
+
 public class Main implements Runnable {
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
 	public static final String TITLE = "Zephis";
 
 	public static Main instance;
+	public static Random rand = new Random();
 
 	private boolean _running;
 	private Thread _thread;
@@ -14,21 +17,21 @@ public class Main implements Runnable {
 	private GameManager _mGame;
 
 	public void init() {
-		this._mWindow = new WindowManager();
-		this._mGame = new GameManager();
+		_mWindow = new WindowManager();
+		_mGame = new GameManager();
 
-		this._mWindow.createWindow(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, Main.TITLE);
-		this._mGame.initGame();
+		_mWindow.createWindow(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, Main.TITLE);
+		_mGame.initGame();
 	}
 
 	public void update() {
-		this._mWindow.updateWindow();
-		this._mGame.updateGame();
+		_mWindow.updateWindow();
+		_mGame.updateGame();
 	}
 
 	public void deinit() {
-		this._mWindow.destroyWindow();
-		this._mGame.destroyGame();
+		_mWindow.destroyWindow();
+		_mGame.destroyGame();
 	}
 
 	public void run() {

@@ -19,6 +19,7 @@ public class WindowManager {
 		if (Display.isCloseRequested())
 			Main.instance.stop();
 
+		Display.sync(60);
 		Display.update();
 	}
 
