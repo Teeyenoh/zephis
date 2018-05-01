@@ -1,4 +1,9 @@
-package uk.co.quarklike.src;
+package uk.co.quarklike.zephis.src.map.entity;
+
+import java.util.Arrays;
+
+import uk.co.quarklike.zephis.src.map.Map;
+import uk.co.quarklike.zephis.src.map.item.Inventory;
 
 public class Entity {
 	public static final byte DIR_NONE = 0x11;
@@ -6,6 +11,9 @@ public class Entity {
 	public static final byte DIR_RIGHT = 0x21;
 	public static final byte DIR_BACKWARD = 0x10;
 	public static final byte DIR_LEFT = 0x01;
+
+	public static final int ACTION_NONE = 0;
+	public static final int ACTION_ATTACK = 1;
 
 	public static final int getXDirection(byte dir) {
 		byte comp = (byte) (dir >> 4);
@@ -22,21 +30,40 @@ public class Entity {
 	private int _x, _y;
 	private byte _subX, _subY;
 	private boolean _moving;
-	private byte _direction = DIR_NONE;
+	private byte _direction = DIR_RIGHT;
 	private byte _queuedMove = DIR_NONE;
+	private int _action = ACTION_NONE;
+	private int _actionTimer = 0;
 
 	private int _speed = 2;
 	private int _hp = 10;
+	private int _cooldown = 0;
+
+	private Skills _skills;
+	private Inventory _inventory;
 
 	public Entity(Map map) {
 		_map = map;
 		_entityID = map.registerEntity(this);
+
+		_skills = new Skills(new int[] { 10, 10, 10, 10, 10, 10 }, new int[] { 32, 16, 44, 27, 11, 31, 73, 19, 19, 80, 43, 3, 64, 9, 80, 16, 35, 18, 22, 2, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 39, 41, 43, 47, 53, 57, 59, 61, 67, 71, 73, 79, 83, 87, 89 });
+		_inventory = new Inventory();
 	}
 
 	public void update() {
 		if (_hp <= 0) {
 			_map.removeEntity(_entityID);
 			return;
+		}
+
+		if (_actionTimer > 0) {
+			_actionTimer--;
+		} else {
+			_action = ACTION_NONE;
+		}
+
+		if (_cooldown > 0) {
+			_cooldown--;
 		}
 
 		if (_moving) {
@@ -71,7 +98,7 @@ public class Entity {
 	}
 
 	public void move(byte direction) {
-		if (direction == DIR_NONE)
+		if (direction == DIR_NONE || _cooldown > 0)
 			return;
 
 		if (!_moving) {
@@ -84,6 +111,9 @@ public class Entity {
 	}
 
 	public void attack() {
+		if (_cooldown > 0 || _moving)
+			return;
+
 		for (int i = -1; i <= 1; i++) {
 			Entity e = null;
 			int x = _x + getXDirection(_direction) + (i * getYDirection(_direction));
@@ -93,6 +123,10 @@ public class Entity {
 				e.takeDamage(5);
 			}
 		}
+
+		_action = ACTION_ATTACK;
+		_actionTimer = 30;
+		_cooldown = 30;
 	}
 
 	public void takeDamage(int damage) {
@@ -156,5 +190,37 @@ public class Entity {
 
 	public long getEntityID() {
 		return _entityID;
+	}
+
+	public String getName() {
+		return "Quarkbean";
+	}
+
+	public int getLevel() {
+		return 1;
+	}
+
+	public String getRace() {
+		return "Plains Elf";
+	}
+
+	public float getHealthPercent() {
+		return (float) _hp / 10;
+	}
+
+	public byte getDirection() {
+		return _direction;
+	}
+
+	public int getAction() {
+		return _action;
+	}
+
+	public Skills getSkills() {
+		return _skills;
+	}
+	
+	public Inventory getInventory() {
+		return _inventory;
 	}
 }

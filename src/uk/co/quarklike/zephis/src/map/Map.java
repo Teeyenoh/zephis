@@ -1,9 +1,11 @@
-package uk.co.quarklike.src;
+package uk.co.quarklike.zephis.src.map;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+
+import uk.co.quarklike.zephis.src.Zephis;
+import uk.co.quarklike.zephis.src.map.entity.Entity;
 
 public class Map {
 	private static Comparator<Entity> _drawSort = new Comparator<Entity>() {

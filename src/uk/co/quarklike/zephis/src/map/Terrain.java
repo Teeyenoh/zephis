@@ -1,4 +1,6 @@
-package uk.co.quarklike.src;
+package uk.co.quarklike.zephis.src.map;
+
+import uk.co.quarklike.zephis.src.Zephis;
 
 public class Terrain {
 	private static Terrain[] terrain = new Terrain[256];
@@ -11,15 +13,11 @@ public class Terrain {
 	public static final Terrain grass = new Terrain(1, "grass", "grass");
 	public static final Terrain dirt = new Terrain(2, "dirt", "dirt");
 
-	public Terrain(int terrainID, String name, int textureID) {
+	public Terrain(int terrainID, String name, String texturePath) {
 		_terrainID = terrainID;
 		terrain[terrainID] = this;
 		_name = name;
-		_textureID = textureID;
-	}
-
-	public Terrain(int terrainID, String name, String texturePath) {
-		this(terrainID, name, Zephis.instance.getTextureManager().getTexture(texturePath));
+		_textureID = Zephis.instance.getTextureManager().getTexture(texturePath);
 	}
 
 	public int getTextureID() {
