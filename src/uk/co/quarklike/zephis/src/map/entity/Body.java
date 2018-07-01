@@ -198,6 +198,6 @@ public class Body {
 	}
 
 	private boolean isDead() {
-		return _hp > 0;
+		return _hp <= 0;
 	}
 }
