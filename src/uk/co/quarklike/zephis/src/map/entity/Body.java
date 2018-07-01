@@ -121,8 +121,8 @@ public class Body {
 			e.getBody().takeDamage(5);
 		}
 
-		_anim.setCurrentAnim("attack_" + Util.getDirectionName(_direction));
-		_anim.queueAnim("idle_" + Util.getDirectionName(_direction));
+		_anim.setCurrentAnim("attack");
+		_anim.queueAnim("idle");
 		_attackCooldown = 30;
 	}
 

@@ -75,6 +75,8 @@ public class Zephis implements Runnable {
 
 	public void postInit() {
 		_player.getBody().setPosition((byte) 1, (byte) 1);
+
+		(new Entity(_map)).getBody().setPosition((byte) 10, (byte) 10);
 	}
 
 	public void update() {
