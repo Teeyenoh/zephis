@@ -6,21 +6,18 @@ import uk.co.quarklike.zephis.src.Zephis;
 import uk.co.quarklike.zephis.src.graphics.MenuPosition;
 import uk.co.quarklike.zephis.src.graphics.MenuPositionGroup;
 import uk.co.quarklike.zephis.src.graphics.RenderEngine;
-import uk.co.quarklike.zephis.src.map.Map;
 import uk.co.quarklike.zephis.src.map.entity.Entity;
 import uk.co.quarklike.zephis.src.map.entity.Skills;
 
 public class GameStateStatMenu implements GameState {
 	private Zephis _instance;
-	
-	private Map _map;
+
 	private Entity _player;
 	private MenuPosition _statPosition;
 
-	public void init(Zephis instance, Entity player, Map map) {
+	public void init(Zephis instance, Entity player) {
 		_instance = instance;
 		_player = player;
-		_map = map;
 		_statPosition = new MenuPosition(new MenuPositionGroup[] { new MenuPositionGroup(6, 6, 0), new MenuPositionGroup(Skills.SKILL_COUNT, 19, 3) });
 	}
 
@@ -36,8 +33,8 @@ public class GameStateStatMenu implements GameState {
 				}
 			}
 		}
-		
-		renderEngine.renderStats(_map, _player, _statPosition);
+
+		renderEngine.renderStats(_player, _statPosition);
 	}
 
 	public void deinit() {

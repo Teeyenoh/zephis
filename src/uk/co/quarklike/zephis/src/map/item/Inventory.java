@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import uk.co.quarklike.zephis.src.Translation;
-
 public class Inventory {
 	private HashMap<Integer, Integer> _items;
 

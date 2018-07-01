@@ -6,23 +6,19 @@ import uk.co.quarklike.zephis.src.Zephis;
 import uk.co.quarklike.zephis.src.graphics.MenuPosition;
 import uk.co.quarklike.zephis.src.graphics.MenuPositionGroup;
 import uk.co.quarklike.zephis.src.graphics.RenderEngine;
-import uk.co.quarklike.zephis.src.map.Map;
 import uk.co.quarklike.zephis.src.map.entity.Entity;
-import uk.co.quarklike.zephis.src.map.entity.Skills;
 
 public class GameStateInventory implements GameState {
 	private Zephis _instance;
 
-	private Map _map;
 	private Entity _player;
 	private MenuPosition _inventoryPosition;
 
-	public void init(Zephis instance, Entity player, Map map) {
+	public void init(Zephis instance, Entity player) {
 		_instance = instance;
 		_player = player;
-		_map = map;
-		_player.getInventory().sortByAlphabet();
-		_inventoryPosition = new MenuPosition(new MenuPositionGroup[] { new MenuPositionGroup(_player.getInventory().getItems().length, 27, 3) });
+		_player.getBody().getInventory().sortByAlphabet();
+		_inventoryPosition = new MenuPosition(new MenuPositionGroup[] { new MenuPositionGroup(_player.getBody().getInventory().getItems().length, 27, 3) });
 	}
 
 	public void update(RenderEngine renderEngine) {
@@ -40,7 +36,7 @@ public class GameStateInventory implements GameState {
 			}
 		}
 
-		renderEngine.renderInventory(_map, _player, _inventoryPosition);
+		renderEngine.renderInventory(_player, _inventoryPosition);
 	}
 
 	public void deinit() {

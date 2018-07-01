@@ -7,6 +7,8 @@ import org.lwjgl.opengl.Display;
 import uk.co.quarklike.zephis.src.graphics.RenderEngine;
 import uk.co.quarklike.zephis.src.graphics.TextureManager;
 import uk.co.quarklike.zephis.src.map.Map;
+import uk.co.quarklike.zephis.src.map.MapData;
+import uk.co.quarklike.zephis.src.map.MapManager;
 import uk.co.quarklike.zephis.src.map.entity.Entity;
 import uk.co.quarklike.zephis.src.map.item.Item;
 import uk.co.quarklike.zephis.src.state.GameState;
@@ -24,8 +26,10 @@ public class Zephis implements Runnable {
 
 	private Random _random;
 	private RenderEngine _renderEngine;
+	private MapManager _mapManager;
 
 	private Map _map;
+
 	private Entity _player;
 
 	private GameState _currentState;
@@ -45,32 +49,32 @@ public class Zephis implements Runnable {
 
 		_random = new Random();
 		_renderEngine = new RenderEngine(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, true);
+
+		MapData.initMapData();
 	}
 
 	public void init() {
 		_renderEngine.init();
+		_mapManager = new MapManager();
 
-		_map = new Map(16, 16);
+		_map = new Map(_mapManager, _mapManager.loadMap("testMap"));
+		_mapManager.addMap(_map.getMapID(), _map);
+
 		_player = new Entity(_map);
 
-		_player.getInventory().addItem(Item.animal_jar_insect_stick.getItemID(), 5);
-		_player.getInventory().addItem(Item.weapon_shortsword_copper.getItemID(), 4);
-		_player.getInventory().addItem(Item.tool_whistle_tin.getItemID(), 10);
-		_player.getInventory().addItem(Item.flower_sunflower.getItemID(), 3);
-		_player.getInventory().addItem(Item.armour_chest_leather.getItemID(), 1);
-		_player.getInventory().addItem(Item.animal_jar_insect_stick.getItemID(), 1);
+		_player.getBody().getInventory().addItem(Item.animal_jar_insect_stick.getItemID(), 5);
+		_player.getBody().getInventory().addItem(Item.weapon_shortsword_copper.getItemID(), 4);
+		_player.getBody().getInventory().addItem(Item.tool_whistle_tin.getItemID(), 10);
+		_player.getBody().getInventory().addItem(Item.flower_sunflower.getItemID(), 3);
+		_player.getBody().getInventory().addItem(Item.armour_chest_leather.getItemID(), 1);
+		_player.getBody().getInventory().addItem(Item.animal_jar_insect_stick.getItemID(), 1);
 
 		_currentState = new GameStatePlaying();
-		_currentState.init(this, _player, _map);
+		_currentState.init(this, _player);
 	}
 
 	public void postInit() {
-		_player.setPosition(10, 10);
-		(new Entity(_map)).setPosition(5, 3);
-		(new Entity(_map)).setPosition(5, 4);
-		(new Entity(_map)).setPosition(5, 5);
-		(new Entity(_map)).setPosition(5, 6);
-		(new Entity(_map)).setPosition(5, 7);
+		_player.getBody().setPosition((byte) 1, (byte) 1);
 	}
 
 	public void update() {
@@ -88,7 +92,7 @@ public class Zephis implements Runnable {
 	public void changeState(GameState newState) {
 		_currentState.deinit();
 		_currentState = newState;
-		_currentState.init(this, _player, _map);
+		_currentState.init(this, _player);
 	}
 
 	public Random getRandom() {

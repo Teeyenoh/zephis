@@ -83,15 +83,15 @@ public class RenderEngine {
 		endRender();
 	}
 
-	public void renderStats(Map map, Entity camera, MenuPosition position) {
+	public void renderStats(Entity camera, MenuPosition position) {
 		prepareRender();
-		drawStats(map, camera, position);
+		drawStats(camera, position);
 		endRender();
 	}
 
-	public void renderInventory(Map map, Entity camera, MenuPosition position) {
+	public void renderInventory(Entity camera, MenuPosition position) {
 		prepareRender();
-		drawInventory(map, camera, position);
+		drawInventory(camera, position);
 		endRender();
 	}
 
@@ -106,10 +106,10 @@ public class RenderEngine {
 	}
 
 	private void drawGame(Map map, Entity camera) {
-		int cameraX = camera.getX();
-		byte cameraSubX = camera.getSubX();
-		int cameraY = camera.getY();
-		byte cameraSubY = camera.getSubY();
+		int cameraX = camera.getBody().getX();
+		byte cameraSubX = camera.getBody().getSubX();
+		int cameraY = camera.getBody().getY();
+		byte cameraSubY = camera.getBody().getSubY();
 
 		glTranslatef((-cameraX * _TILE_SIZE) - cameraSubX, (cameraY * _TILE_SIZE) + cameraSubY, 0);
 
@@ -122,17 +122,17 @@ public class RenderEngine {
 		}
 
 		for (Entity e : map.getEntities()) {
-			if (isOnScreen(cameraX, cameraY, e.getX(), e.getY())) {
+			if (isOnScreen(cameraX, cameraY, e.getBody().getX(), e.getBody().getY())) {
 				drawEntity(e);
 			}
 		}
 
 		for (Entity e : map.getEntities()) {
-			if (isOnScreen(cameraX, cameraY, e.getX(), e.getY()) && !e.equals(camera)) {
+			if (isOnScreen(cameraX, cameraY, e.getBody().getX(), e.getBody().getY()) && !e.equals(camera)) {
 				glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("bar_back"));
-				drawQuad((e.getX() * 32) + e.getSubX(), (e.getY() * 32) + e.getSubY() + 40, 32, 4);
+				drawQuad((e.getBody().getX() * 32) + e.getBody().getSubX(), (e.getBody().getY() * 32) + e.getBody().getSubY() + 40, 32, 4);
 				glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("health"));
-				drawQuad((e.getX() * 32) + e.getSubX(), (e.getY() * 32) + e.getSubY() + 40, (int) (30 * (e.getHealthPercent())), 2);
+				drawQuad((e.getBody().getX() * 32) + e.getBody().getSubX(), (e.getBody().getY() * 32) + e.getBody().getSubY() + 40, (int) (30 * (e.getBody().getHealthPercent())), 2);
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
 		}
@@ -151,18 +151,18 @@ public class RenderEngine {
 		glTranslatef((cameraX * _TILE_SIZE) + cameraSubX, (-cameraY * _TILE_SIZE) - cameraSubY, 0);
 	}
 
-	private void drawStats(Map map, Entity camera, MenuPosition position) {
-		drawStatMenu(map, camera, position);
-		drawHealthMenu(map, camera);
-		drawRepMenu(map, camera);
+	private void drawStats(Entity camera, MenuPosition position) {
+		drawStatMenu(camera, position);
+		drawHealthMenu(camera);
+		drawRepMenu(camera);
 	}
 
-	private void drawInventory(Map map, Entity camera, MenuPosition position) {
-		drawInventoryMenu(map, camera, position);
-		drawItemMenu(map, camera, position);
+	private void drawInventory(Entity camera, MenuPosition position) {
+		drawInventoryMenu(camera, position);
+		drawItemMenu(camera, position);
 	}
 
-	private void drawInventoryMenu(Map map, Entity camera, MenuPosition position) {
+	private void drawInventoryMenu(Entity camera, MenuPosition position) {
 		int centreX = -_windowWidth32 / 4;
 		int centreY = 0;
 		int width = _windowWidth32 / 2;
@@ -173,7 +173,7 @@ public class RenderEngine {
 		int bottomY = centreY - (height / 2) + 16;
 		int topY = centreY + (height / 2) - 16;
 
-		drawMenu(map, camera, centreX, centreY, width, height);
+		drawMenu(camera, centreX, centreY, width, height);
 
 		drawText(_font, Color.black, "<MENU_INVENTORY>", centreX, topY, ALIGN_CENTRE);
 
@@ -201,15 +201,15 @@ public class RenderEngine {
 					drawHighlight(centreX, textY, width);
 				}
 
-				int itemID = (int) camera.getInventory().getItems()[i];
+				int itemID = (int) camera.getBody().getInventory().getItems()[i];
 
 				drawText(_font, Color.black, Item.getItem(itemID).getName(), leftX, textY, ALIGN_LEFT);
-				drawText(_font, Color.black, "" + camera.getInventory().getItemCount(itemID), rightX, textY, ALIGN_RIGHT);
+				drawText(_font, Color.black, "" + camera.getBody().getInventory().getItemCount(itemID), rightX, textY, ALIGN_RIGHT);
 			}
 		}
 	}
 
-	private void drawItemMenu(Map map, Entity camera, MenuPosition position) {
+	private void drawItemMenu(Entity camera, MenuPosition position) {
 		int centreX = _windowWidth32 / 4;
 		int centreY = 0;
 		int width = _windowWidth32 / 2;
@@ -220,9 +220,9 @@ public class RenderEngine {
 		int bottomY = centreY - (height / 2) + 16;
 		int topY = centreY + (height / 2) - 16;
 
-		drawMenu(map, camera, centreX, centreY, width, height);
+		drawMenu(camera, centreX, centreY, width, height);
 
-		int itemID = (int) camera.getInventory().getItems()[position.getGroup().getIndex()];
+		int itemID = (int) camera.getBody().getInventory().getItems()[position.getGroup().getIndex()];
 		Item item = Item.getItem(itemID);
 
 		{
@@ -240,7 +240,7 @@ public class RenderEngine {
 		}
 	}
 
-	private void drawStatMenu(Map map, Entity camera, MenuPosition position) {
+	private void drawStatMenu(Entity camera, MenuPosition position) {
 		int centreX = -_windowWidth32 / 4;
 		int centreY = 0;
 		int width = _windowWidth32 / 2;
@@ -251,7 +251,7 @@ public class RenderEngine {
 		int bottomY = centreY - (height / 2) + 16;
 		int topY = centreY + (height / 2) - 16;
 
-		drawMenu(map, camera, centreX, centreY, width, height);
+		drawMenu(camera, centreX, centreY, width, height);
 
 		// Character Details
 		{
@@ -272,12 +272,12 @@ public class RenderEngine {
 			drawText(_font, Color.black, "<ABILITY_FAITH>", leftX, topY - (18 * 7), ALIGN_LEFT);
 			drawText(_font, Color.black, "<ABILITY_PERSONALITY>", leftX, topY - (18 * 8), ALIGN_LEFT);
 
-			drawText(_font, Color.black, String.valueOf(camera.getSkills().getAbility(0)), rightX, topY - (18 * 3), ALIGN_RIGHT);
-			drawText(_font, Color.black, String.valueOf(camera.getSkills().getAbility(1)), rightX, topY - (18 * 4), ALIGN_RIGHT);
-			drawText(_font, Color.black, String.valueOf(camera.getSkills().getAbility(2)), rightX, topY - (18 * 5), ALIGN_RIGHT);
-			drawText(_font, Color.black, String.valueOf(camera.getSkills().getAbility(3)), rightX, topY - (18 * 6), ALIGN_RIGHT);
-			drawText(_font, Color.black, String.valueOf(camera.getSkills().getAbility(4)), rightX, topY - (18 * 7), ALIGN_RIGHT);
-			drawText(_font, Color.black, String.valueOf(camera.getSkills().getAbility(5)), rightX, topY - (18 * 8), ALIGN_RIGHT);
+			drawText(_font, Color.black, String.valueOf(camera.getMind().getSkills().getAbility(0)), rightX, topY - (18 * 3), ALIGN_RIGHT);
+			drawText(_font, Color.black, String.valueOf(camera.getMind().getSkills().getAbility(1)), rightX, topY - (18 * 4), ALIGN_RIGHT);
+			drawText(_font, Color.black, String.valueOf(camera.getMind().getSkills().getAbility(2)), rightX, topY - (18 * 5), ALIGN_RIGHT);
+			drawText(_font, Color.black, String.valueOf(camera.getMind().getSkills().getAbility(3)), rightX, topY - (18 * 6), ALIGN_RIGHT);
+			drawText(_font, Color.black, String.valueOf(camera.getMind().getSkills().getAbility(4)), rightX, topY - (18 * 7), ALIGN_RIGHT);
+			drawText(_font, Color.black, String.valueOf(camera.getMind().getSkills().getAbility(5)), rightX, topY - (18 * 8), ALIGN_RIGHT);
 
 			int topSkill = position.getGroup(1).getTop();
 			int skillPos = position.getGroup(1).getIndex();
@@ -294,7 +294,7 @@ public class RenderEngine {
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
 
-			int[] skillOrder = camera.getSkills().getSkillOrder();
+			int[] skillOrder = camera.getMind().getSkills().getSkillOrder();
 
 			for (int i = topSkill; i < Math.min(position.getGroup(1).getBottom(), Skills.SKILL_COUNT); i++) {
 				int modPos = i - topSkill;
@@ -307,7 +307,7 @@ public class RenderEngine {
 				int skill = skillOrder[i];
 
 				drawText(_font, Color.black, Skills.getSkillName(skill), leftX, textY, ALIGN_LEFT);
-				drawText(_font, Color.black, String.valueOf(camera.getSkills().getSkill(skill)), rightX, textY, ALIGN_RIGHT);
+				drawText(_font, Color.black, String.valueOf(camera.getMind().getSkills().getSkill(skill)), rightX, textY, ALIGN_RIGHT);
 			}
 		}
 	}
@@ -327,25 +327,25 @@ public class RenderEngine {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	private void drawHealthMenu(Map map, Entity camera) {
+	private void drawHealthMenu(Entity camera) {
 		int centreX = _windowWidth32 / 4;
 		int centreY = _windowHeight32 / 4;
 		int width = _windowWidth32 / 2;
 		int height = _windowHeight32 / 2;
 
-		drawMenu(map, camera, centreX, centreY, width, height);
+		drawMenu(camera, centreX, centreY, width, height);
 	}
 
-	private void drawRepMenu(Map map, Entity camera) {
+	private void drawRepMenu(Entity camera) {
 		int centreX = _windowWidth32 / 4;
 		int centreY = -_windowHeight32 / 4;
 		int width = _windowWidth32 / 2;
 		int height = _windowHeight32 / 2;
 
-		drawMenu(map, camera, centreX, centreY, width, height);
+		drawMenu(camera, centreX, centreY, width, height);
 	}
 
-	private void drawMenu(Map map, Entity camera, int x, int y, int width, int height) {
+	private void drawMenu(Entity camera, int x, int y, int width, int height) {
 		glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("guiskin1"));
 
 		int middleWidth = width - 64;
@@ -416,56 +416,11 @@ public class RenderEngine {
 	}
 
 	private void drawEntity(Entity e) {
-		switch (e.getDirection()) {
-		case Entity.DIR_FORWARD:
-			if (e.getAction() == Entity.ACTION_ATTACK) {
-				glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("action_swordswing"));
-				drawRotatedQuad(e.getX() * _TILE_SIZE, (e.getY() + 1) * _TILE_SIZE - 8, _TILE_SIZE * 4, _TILE_SIZE, 0);
-				glBindTexture(GL_TEXTURE_2D, 0);
-			}
+		TextureCell texture = e.getBody().getTexture();
 
-			glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("player"));
-			drawQuad(e.getX() * _TILE_SIZE + e.getSubX(), e.getY() * _TILE_SIZE + e.getSubY() + 20, _TILE_SIZE, _TILE_SIZE * 2);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			break;
-		case Entity.DIR_LEFT:
-			if (e.getAction() == Entity.ACTION_ATTACK) {
-				glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("action_swordswing"));
-				drawRotatedQuad((e.getX() - 1) * _TILE_SIZE + 8, e.getY() * _TILE_SIZE, _TILE_SIZE, _TILE_SIZE * 4, 3);
-				glBindTexture(GL_TEXTURE_2D, 0);
-			}
-
-			glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("player"));
-			drawQuad(e.getX() * _TILE_SIZE + e.getSubX(), e.getY() * _TILE_SIZE + e.getSubY() + 20, _TILE_SIZE, _TILE_SIZE * 2);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			break;
-		case Entity.DIR_BACKWARD:
-			glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("player"));
-			drawQuad(e.getX() * _TILE_SIZE + e.getSubX(), e.getY() * _TILE_SIZE + e.getSubY() + 20, _TILE_SIZE, _TILE_SIZE * 2);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			if (e.getAction() == Entity.ACTION_ATTACK) {
-				glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("action_swordswing"));
-				drawRotatedQuad(e.getX() * _TILE_SIZE, (e.getY() - 1) * _TILE_SIZE + 8, _TILE_SIZE * 4, _TILE_SIZE, 2);
-				glBindTexture(GL_TEXTURE_2D, 0);
-			}
-
-			break;
-		case Entity.DIR_RIGHT:
-			glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("player"));
-			drawQuad(e.getX() * _TILE_SIZE + e.getSubX(), e.getY() * _TILE_SIZE + e.getSubY() + 20, _TILE_SIZE, _TILE_SIZE * 2);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			if (e.getAction() == Entity.ACTION_ATTACK) {
-				glBindTexture(GL_TEXTURE_2D, _textureManager.getTexture("action_swordswing"));
-				drawRotatedQuad((e.getX() + 1) * _TILE_SIZE - 8, e.getY() * _TILE_SIZE, _TILE_SIZE, _TILE_SIZE * 4, 1);
-				glBindTexture(GL_TEXTURE_2D, 0);
-			}
-
-			break;
-		}
+		texture.bind(_textureManager);
+		drawQuadWithTextureCell(e.getBody().getX() * _TILE_SIZE + e.getBody().getSubX(), e.getBody().getY() * _TILE_SIZE + e.getBody().getSubY() + 20, _TILE_SIZE, _TILE_SIZE * 2, texture);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	private void drawParticle(Particle p) {
@@ -546,6 +501,10 @@ public class RenderEngine {
 				drawQuadWithTextureRegion(startX + (i * repeatWidth), startY + (j * repeatHeight), repeatWidth, repeatHeight, x1, y1, x2, y2);
 			}
 		}
+	}
+
+	private void drawQuadWithTextureCell(int x, int y, int width, int height, TextureCell cell) {
+		drawQuadWithTextureRegion(x, y, width, height, cell.getXCoord1(), cell.getYCoord1(), cell.getXCoord2(), cell.getYCoord2());
 	}
 
 	private void drawQuadWithTextureRegion(int x, int y, int width, int height, float x1, float y1, float x2, float y2) {
